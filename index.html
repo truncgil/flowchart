@@ -106,15 +106,17 @@
                             <span class="material-icons">download</span>
                             <span>Export</span>
                         </button>
-                        <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg hidden group-hover:block transition-colors duration-200">
-                            <button id="export-png" class="w-full px-4 py-2 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                <span class="material-icons align-middle mr-2">image</span>
-                                PNG
-                            </button>
-                            <button id="export-svg" class="w-full px-4 py-2 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                <span class="material-icons align-middle mr-2">code</span>
-                                SVG
-                            </button>
+                        <div class="absolute right-0 mt-0 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg hidden group-hover:block transition-colors duration-200 z-50">
+                            <div class="py-1">
+                                <button id="export-png" class="w-full px-4 py-2 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                                    <span class="material-icons align-middle mr-2">image</span>
+                                    PNG
+                                </button>
+                                <button id="export-svg" class="w-full px-4 py-2 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                                    <span class="material-icons align-middle mr-2">code</span>
+                                    SVG
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -131,7 +133,7 @@
     <!-- Main Content -->
     <main class="pt-16 h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
         <!-- Preview (Full Screen) -->
-        <div id="mermaid-preview" class="w-full h-full bg-white dark:bg-gray-800 transition-colors duration-200">
+        <div id="mermaid-preview" class="w-full h-full bg-white dark:bg-gray-800 transition-colors duration-200 overflow-hidden">
             <div class="flex items-center justify-center h-full text-gray-500 dark:text-gray-400 transition-colors duration-200">
                 <span class="material-icons mr-2">preview</span>
                 <span>Your diagram will appear here</span>
