@@ -1,91 +1,70 @@
 // State management
 const state = {
-    currentStep: 1,
     mermaidCode: '',
     diagramSvg: null,
-    isRendering: false
+    isRendering: false,
+    zoomLevel: 100,
+    isDarkMode: false
 };
 
 // DOM Elements
 const elements = {
-    stepIndicators: document.querySelectorAll('.step-indicator'),
-    stepContents: document.querySelectorAll('.step-content'),
     mermaidInput: document.getElementById('mermaid-input'),
-    nextToPreview: document.getElementById('next-to-preview'),
-    backToInput: document.getElementById('back-to-input'),
-    nextToExport: document.getElementById('next-to-export'),
-    backToPreview: document.getElementById('back-to-preview')
+    mermaidPreview: document.getElementById('mermaid-preview'),
+    zoomIn: document.getElementById('zoom-in'),
+    zoomOut: document.getElementById('zoom-out'),
+    zoomLevel: document.getElementById('zoom-level'),
+    themeToggle: document.getElementById('theme-toggle'),
+    exportBtn: document.getElementById('export-btn'),
+    exportPng: document.getElementById('export-png'),
+    exportSvg: document.getElementById('export-svg')
 };
 
 console.log('App initialized with elements:', elements);
 
-// Navigation functions
-function updateStepIndicators(step) {
-    elements.stepIndicators.forEach((indicator, index) => {
-        const circle = indicator.querySelector('div');
-        if (index + 1 <= step) {
-            circle.classList.remove('bg-gray-300');
-            circle.classList.add('bg-blue-500');
-        } else {
-            circle.classList.remove('bg-blue-500');
-            circle.classList.add('bg-gray-300');
-        }
-    });
+// Theme handling
+function toggleTheme() {
+    state.isDarkMode = !state.isDarkMode;
+    document.documentElement.classList.toggle('dark');
+    localStorage.setItem('darkMode', state.isDarkMode);
 }
 
-function showStep(step) {
-    console.log('Showing step:', step);
-    elements.stepContents.forEach((content, index) => {
-        if (index + 1 === step) {
-            content.classList.remove('hidden');
-        } else {
-            content.classList.add('hidden');
-        }
-    });
-    updateStepIndicators(step);
-    state.currentStep = step;
+// Zoom handling
+function updateZoom(delta) {
+    state.zoomLevel = Math.max(50, Math.min(200, state.zoomLevel + delta));
+    elements.zoomLevel.textContent = `${state.zoomLevel}%`;
+    elements.mermaidPreview.style.transform = `scale(${state.zoomLevel / 100})`;
+    elements.mermaidPreview.style.transformOrigin = 'top left';
 }
 
 // Event Listeners
-elements.nextToPreview.addEventListener('click', () => {
-    console.log('Next to preview clicked');
-    if (state.isRendering) {
-        console.log('Already rendering, ignoring click');
-        return;
-    }
-    state.mermaidCode = elements.mermaidInput.value;
-    console.log('Mermaid code:', state.mermaidCode);
-    showStep(2);
-    renderMermaidDiagram();
-});
+elements.zoomIn.addEventListener('click', () => updateZoom(10));
+elements.zoomOut.addEventListener('click', () => updateZoom(-10));
+elements.themeToggle.addEventListener('click', toggleTheme);
 
-elements.backToInput.addEventListener('click', () => {
-    console.log('Back to input clicked');
-    showStep(1);
-});
+// Initialize theme
+if (localStorage.getItem('darkMode') === 'true' || 
+    window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    state.isDarkMode = true;
+    document.documentElement.classList.add('dark');
+}
 
-elements.nextToExport.addEventListener('click', () => {
-    console.log('Next to export clicked');
-    if (!state.diagramSvg) {
-        alert('Please wait for the diagram to render before proceeding.');
-        return;
-    }
-    showStep(3);
-});
-
-elements.backToPreview.addEventListener('click', () => {
-    console.log('Back to preview clicked');
-    showStep(2);
+// Live preview
+let previewTimeout;
+elements.mermaidInput.addEventListener('input', () => {
+    clearTimeout(previewTimeout);
+    previewTimeout = setTimeout(() => {
+        state.mermaidCode = elements.mermaidInput.value;
+        renderMermaidDiagram();
+    }, 500);
 });
 
 // URL handling for sharing
 function encodeForUrl(str) {
-    // Use encodeURIComponent to handle all characters
     return encodeURIComponent(str);
 }
 
 function decodeFromUrl(str) {
-    // Use decodeURIComponent to handle all characters
     return decodeURIComponent(str);
 }
 
@@ -106,9 +85,9 @@ function loadCodeFromUrl() {
             const decodedCode = decodeFromUrl(hash);
             elements.mermaidInput.value = decodedCode;
             state.mermaidCode = decodedCode;
+            renderMermaidDiagram();
         } catch (e) {
             console.error('Invalid URL hash:', e);
-            // Clear invalid hash
             window.history.replaceState({}, '', window.location.pathname);
         }
     }
@@ -118,5 +97,4 @@ function loadCodeFromUrl() {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM Content Loaded');
     loadCodeFromUrl();
-    showStep(1);
 }); 

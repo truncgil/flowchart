@@ -24,7 +24,7 @@ async function renderMermaidDiagram() {
     try {
         // Set rendering state
         state.isRendering = true;
-        previewContainer.innerHTML = '<div class="p-4 text-gray-600">Rendering diagram...</div>';
+        previewContainer.innerHTML = '<div class="flex items-center justify-center h-full text-gray-500 dark:text-gray-400"><span class="material-icons animate-spin mr-2">sync</span><span>Rendering diagram...</span></div>';
 
         // Validate syntax
         validateMermaidSyntax(state.mermaidCode);
@@ -62,19 +62,29 @@ async function renderMermaidDiagram() {
         } catch (renderError) {
             console.error('Mermaid rendering error:', renderError);
             previewContainer.innerHTML = `
-                <div class="p-4 text-red-600 bg-red-50 rounded-lg">
-                    <p class="font-medium">Error rendering diagram:</p>
-                    <p class="text-sm mt-1">${renderError.message}</p>
-                    <p class="text-sm mt-2">Please check your Mermaid.js syntax and try again.</p>
+                <div class="flex items-center justify-center h-full">
+                    <div class="p-4 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 rounded-lg max-w-lg">
+                        <div class="flex items-center mb-2">
+                            <span class="material-icons mr-2">error</span>
+                            <p class="font-medium">Error rendering diagram</p>
+                        </div>
+                        <p class="text-sm mt-1">${renderError.message}</p>
+                        <p class="text-sm mt-2">Please check your Mermaid.js syntax and try again.</p>
+                    </div>
                 </div>
             `;
         }
     } catch (error) {
         console.error('Error in renderMermaidDiagram:', error);
         previewContainer.innerHTML = `
-            <div class="p-4 text-red-600 bg-red-50 rounded-lg">
-                <p class="font-medium">Error:</p>
-                <p class="text-sm mt-1">${error.message}</p>
+            <div class="flex items-center justify-center h-full">
+                <div class="p-4 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 rounded-lg max-w-lg">
+                    <div class="flex items-center mb-2">
+                        <span class="material-icons mr-2">error</span>
+                        <p class="font-medium">Error</p>
+                    </div>
+                    <p class="text-sm mt-1">${error.message}</p>
+                </div>
             </div>
         `;
     } finally {
