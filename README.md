@@ -1,4 +1,6 @@
 # Trunçgil Flowchart
+![image](https://github.com/user-attachments/assets/103037de-f73d-40c4-88c1-5d1d5bfaab9d)
+
 
 A powerful, enterprise-grade flowchart creation and management platform built with modern web technologies. This application enables users to create, collaborate, and manage complex flowcharts with advanced features and real-time collaboration capabilities.
 
