@@ -4,7 +4,9 @@ const state = {
     diagramSvg: null,
     isRendering: false,
     zoomLevel: 100,
-    isDarkMode: false
+    isDarkMode: false,
+    editor: null,
+    isEditorCollapsed: false
 };
 
 // DOM Elements
@@ -17,16 +19,111 @@ const elements = {
     themeToggle: document.getElementById('theme-toggle'),
     exportBtn: document.getElementById('export-btn'),
     exportPng: document.getElementById('export-png'),
-    exportSvg: document.getElementById('export-svg')
+    exportSvg: document.getElementById('export-svg'),
+    editorContainer: document.getElementById('code-editor-container'),
+    editorHeader: document.getElementById('editor-header'),
+    editorContent: document.getElementById('editor-content'),
+    toggleEditor: document.getElementById('toggle-editor')
 };
 
 console.log('App initialized with elements:', elements);
+
+// Initialize CodeMirror
+function initializeCodeMirror() {
+    state.editor = CodeMirror.fromTextArea(elements.mermaidInput, {
+        mode: 'javascript',
+        theme: state.isDarkMode ? 'monokai' : 'default',
+        lineNumbers: true,
+        lineWrapping: true,
+        autoCloseBrackets: true,
+        matchBrackets: true,
+        indentUnit: 4,
+        tabSize: 4,
+        extraKeys: {
+            "Ctrl-Space": "autocomplete"
+        }
+    });
+
+    // Set initial content
+    state.editor.setValue(`graph TD
+    A[Start] --> B[Process]
+    B --> C[End]`);
+
+    // Handle editor changes
+    state.editor.on('change', () => {
+        clearTimeout(state.previewTimeout);
+        state.previewTimeout = setTimeout(() => {
+            state.mermaidCode = state.editor.getValue();
+            renderMermaidDiagram();
+        }, 500);
+    });
+}
+
+// Drag and Drop functionality
+function initializeDragAndDrop() {
+    let isDragging = false;
+    let currentX;
+    let currentY;
+    let initialX;
+    let initialY;
+    let xOffset = 0;
+    let yOffset = 0;
+
+    elements.editorHeader.addEventListener('mousedown', dragStart);
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('mouseup', dragEnd);
+
+    function dragStart(e) {
+        initialX = e.clientX - xOffset;
+        initialY = e.clientY - yOffset;
+
+        if (e.target === elements.editorHeader || e.target.parentNode === elements.editorHeader) {
+            isDragging = true;
+        }
+    }
+
+    function drag(e) {
+        if (isDragging) {
+            e.preventDefault();
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
+
+            xOffset = currentX;
+            yOffset = currentY;
+
+            setTranslate(currentX, currentY, elements.editorContainer);
+        }
+    }
+
+    function dragEnd() {
+        initialX = currentX;
+        initialY = currentY;
+        isDragging = false;
+    }
+
+    function setTranslate(xPos, yPos, el) {
+        el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
+    }
+}
+
+// Toggle editor collapse
+function toggleEditorCollapse() {
+    state.isEditorCollapsed = !state.isEditorCollapsed;
+    elements.editorContent.style.display = state.isEditorCollapsed ? 'none' : 'block';
+    elements.toggleEditor.querySelector('.material-icons').textContent = 
+        state.isEditorCollapsed ? 'expand_less' : 'expand_more';
+}
 
 // Theme handling
 function toggleTheme() {
     state.isDarkMode = !state.isDarkMode;
     document.documentElement.classList.toggle('dark');
     localStorage.setItem('darkMode', state.isDarkMode);
+    
+    // Update CodeMirror theme
+    if (state.editor) {
+        state.editor.setOption('theme', state.isDarkMode ? 'monokai' : 'default');
+    }
 }
 
 // Zoom handling
@@ -42,16 +139,7 @@ function initializeEventListeners() {
     elements.zoomIn.addEventListener('click', () => updateZoom(10));
     elements.zoomOut.addEventListener('click', () => updateZoom(-10));
     elements.themeToggle.addEventListener('click', toggleTheme);
-
-    // Live preview
-    let previewTimeout;
-    elements.mermaidInput.addEventListener('input', () => {
-        clearTimeout(previewTimeout);
-        previewTimeout = setTimeout(() => {
-            state.mermaidCode = elements.mermaidInput.value;
-            renderMermaidDiagram();
-        }, 500);
-    });
+    elements.toggleEditor.addEventListener('click', toggleEditorCollapse);
 }
 
 // URL handling for sharing
@@ -78,7 +166,7 @@ function loadCodeFromUrl() {
     if (hash) {
         try {
             const decodedCode = decodeFromUrl(hash);
-            elements.mermaidInput.value = decodedCode;
+            state.editor.setValue(decodedCode);
             state.mermaidCode = decodedCode;
             renderMermaidDiagram();
         } catch (e) {
@@ -98,6 +186,12 @@ function initialize() {
         state.isDarkMode = true;
         document.documentElement.classList.add('dark');
     }
+
+    // Initialize CodeMirror
+    initializeCodeMirror();
+
+    // Initialize drag and drop
+    initializeDragAndDrop();
 
     // Initialize event listeners
     initializeEventListeners();
