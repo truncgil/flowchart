@@ -1,4 +1,6 @@
 # Trunçgil Flowchart
+![image](https://github.com/user-attachments/assets/7bc1a78c-4ef7-48af-8d31-0b362881f1b8)
+
 ![image](https://github.com/user-attachments/assets/103037de-f73d-40c4-88c1-5d1d5bfaab9d)
 
 
