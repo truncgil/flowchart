@@ -27,23 +27,6 @@ function toggleTheme() {
     state.isDarkMode = !state.isDarkMode;
     document.documentElement.classList.toggle('dark');
     localStorage.setItem('darkMode', state.isDarkMode);
-    
-    // Update Mermaid theme
-    mermaid.initialize({
-        startOnLoad: false,
-        theme: state.isDarkMode ? 'dark' : 'default',
-        securityLevel: 'loose',
-        flowchart: {
-            useMaxWidth: true,
-            htmlLabels: true,
-            curve: 'basis'
-        }
-    });
-    
-    // Re-render diagram if exists
-    if (state.mermaidCode) {
-        renderMermaidDiagram();
-    }
 }
 
 // Zoom handling
@@ -114,16 +97,6 @@ function initialize() {
         window.matchMedia('(prefers-color-scheme: dark)').matches) {
         state.isDarkMode = true;
         document.documentElement.classList.add('dark');
-        mermaid.initialize({
-            startOnLoad: false,
-            theme: 'dark',
-            securityLevel: 'loose',
-            flowchart: {
-                useMaxWidth: true,
-                htmlLabels: true,
-                curve: 'basis'
-            }
-        });
     }
 
     // Initialize event listeners
