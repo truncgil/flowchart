@@ -1,11 +1,11 @@
 // Export utilities
-const elements = {
+const exportElements = {
     exportPng: document.getElementById('export-png'),
     exportSvg: document.getElementById('export-svg')
 };
 
 // Export as PNG
-elements.exportPng.addEventListener('click', async () => {
+exportElements.exportPng.addEventListener('click', async () => {
     try {
         const previewContainer = document.getElementById('mermaid-preview');
         const svg = previewContainer.querySelector('svg');
@@ -38,7 +38,7 @@ elements.exportPng.addEventListener('click', async () => {
 });
 
 // Export as SVG
-elements.exportSvg.addEventListener('click', () => {
+exportElements.exportSvg.addEventListener('click', () => {
     try {
         const previewContainer = document.getElementById('mermaid-preview');
         const svg = previewContainer.querySelector('svg');

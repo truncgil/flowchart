@@ -5,11 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mermaid.js Flowchart Editor</title>
     <!-- Tailwind CSS -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gray: {
+                            50: '#f9fafb',
+                            100: '#f3f4f6',
+                            200: '#e5e7eb',
+                            300: '#d1d5db',
+                            400: '#9ca3af',
+                            500: '#6b7280',
+                            600: '#4b5563',
+                            700: '#374151',
+                            800: '#1f2937',
+                            900: '#111827'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Mermaid.js -->
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
-    <!-- dom-to-image -->
-    <script src="https://cdn.jsdelivr.net/npm/dom-to-image@2.6.0/dist/dom-to-image.min.js"></script>
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="assets/styles.css">
@@ -91,25 +110,59 @@
         </div>
     </main>
 
+    <!-- Load dependencies first -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dom-to-image@2.6.0/dist/dom-to-image.min.js"></script>
+
     <!-- Initialize Mermaid -->
     <script>
-        console.log('Initializing Mermaid...');
-        mermaid.initialize({
-            startOnLoad: false,
-            theme: 'default',
-            securityLevel: 'loose',
-            flowchart: {
-                useMaxWidth: true,
-                htmlLabels: true,
-                curve: 'basis'
+        // Wait for Mermaid to load
+        function waitForMermaid(callback) {
+            if (window.mermaid) {
+                callback();
+            } else {
+                setTimeout(() => waitForMermaid(callback), 100);
             }
-        });
-        console.log('Mermaid initialized');
-    </script>
+        }
 
-    <!-- Load app scripts -->
-    <script src="js/app.js"></script>
-    <script src="js/mermaid-preview.js"></script>
-    <script src="js/export-utils.js"></script>
+        waitForMermaid(() => {
+            console.log('Initializing Mermaid...');
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: 'default',
+                securityLevel: 'loose',
+                flowchart: {
+                    useMaxWidth: true,
+                    htmlLabels: true,
+                    curve: 'basis'
+                }
+            });
+            console.log('Mermaid initialized');
+
+            // Load app scripts after Mermaid is initialized
+            const scripts = [
+                'js/app.js',
+                'js/mermaid-preview.js',
+                'js/export-utils.js'
+            ];
+
+            function loadScript(src) {
+                return new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = src;
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.body.appendChild(script);
+                });
+            }
+
+            // Load scripts in sequence
+            scripts.reduce((promiseChain, script) => {
+                return promiseChain.then(() => loadScript(script));
+            }, Promise.resolve()).catch(error => {
+                console.error('Error loading scripts:', error);
+            });
+        });
+    </script>
 </body>
 </html> 

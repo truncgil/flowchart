@@ -46,14 +46,34 @@ async function renderMermaidDiagram() {
         console.log('Attempting to render diagram');
         try {
             // Force Mermaid to reinitialize
-            await mermaid.run({
-                querySelector: '#' + diagramId
-            });
+            const { svg } = await mermaid.render(diagramId, state.mermaidCode);
+            
+            // Create a new div for the SVG
+            const svgContainer = document.createElement('div');
+            svgContainer.className = 'mermaid-svg-container';
+            svgContainer.style.width = '100%';
+            svgContainer.style.height = '100%';
+            svgContainer.style.display = 'flex';
+            svgContainer.style.alignItems = 'center';
+            svgContainer.style.justifyContent = 'center';
+            
+            // Insert the SVG
+            svgContainer.innerHTML = svg;
+            
+            // Clear the preview container and add the SVG
+            previewContainer.innerHTML = '';
+            previewContainer.appendChild(svgContainer);
             
             // Get the rendered SVG
-            const svg = diagramDiv.querySelector('svg');
-            if (svg) {
-                state.diagramSvg = svg.outerHTML;
+            const svgElement = svgContainer.querySelector('svg');
+            if (svgElement) {
+                // Set SVG attributes for proper display
+                svgElement.style.width = '100%';
+                svgElement.style.height = '100%';
+                svgElement.style.maxWidth = '100%';
+                svgElement.style.maxHeight = '100%';
+                
+                state.diagramSvg = svgElement.outerHTML;
                 updateUrlWithCode();
                 console.log('Diagram rendered successfully');
             } else {
