@@ -14,10 +14,59 @@ async function exportAsPng() {
         // Show loading state
         showToast('Exporting PNG...', 'info');
 
-        // Convert SVG to PNG
-        const dataUrl = await domtoimage.toPng(svg, {
+        // Create a container for the export
+        const exportContainer = document.createElement('div');
+        exportContainer.style.backgroundColor = state.isDarkMode ? '#1f2937' : '#ffffff';
+        exportContainer.style.padding = '20px';
+        exportContainer.style.display = 'flex';
+        exportContainer.style.flexDirection = 'column';
+        exportContainer.style.alignItems = 'center';
+        exportContainer.style.gap = '20px';
+        exportContainer.style.width = '100%';
+        exportContainer.style.height = 'auto';
+
+        // Add logo
+        const logo = document.createElement('img');
+        logo.src = 'assets/icons/logo.svg';
+        logo.style.width = '30%';
+        logo.style.height = 'auto';
+        logo.style.display = 'block';
+        
+        // Wait for logo to load
+        await new Promise((resolve, reject) => {
+            logo.onload = resolve;
+            logo.onerror = reject;
+        });
+        
+        exportContainer.appendChild(logo);
+
+        // Add separator line
+        const separator = document.createElement('div');
+        separator.style.width = '100%';
+        separator.style.height = '2px';
+        separator.style.backgroundColor = state.isDarkMode ? '#4b5563' : '#e5e7eb';
+        exportContainer.appendChild(separator);
+
+        // Add the diagram
+        const diagramClone = svg.cloneNode(true);
+        diagramClone.style.width = '100%';
+        diagramClone.style.height = 'auto';
+        diagramClone.style.display = 'block';
+        exportContainer.appendChild(diagramClone);
+
+        // Add container to document temporarily
+        document.body.appendChild(exportContainer);
+
+        // Convert to PNG with higher quality settings
+        const dataUrl = await domtoimage.toPng(exportContainer, {
             quality: 1.0,
-            bgcolor: state.isDarkMode ? '#1f2937' : '#ffffff'
+            bgcolor: state.isDarkMode ? '#1f2937' : '#ffffff',
+            width: exportContainer.offsetWidth,
+            height: exportContainer.offsetHeight,
+            style: {
+                transform: 'none',
+                'transform-origin': 'top left'
+            }
         });
 
         // Create download link
@@ -25,6 +74,9 @@ async function exportAsPng() {
         link.download = 'truncgil-flowchart-diagram.png';
         link.href = dataUrl;
         link.click();
+
+        // Clean up
+        exportContainer.remove();
 
         // Show success message
         showToast('PNG exported successfully!', 'success');

@@ -177,7 +177,7 @@ function initializePreviewControls() {
     // Mouse wheel zoom
     elements.mermaidPreview.addEventListener('wheel', (e) => {
         e.preventDefault();
-        const delta = e.deltaY > 0 ? -10 : 10;
+        const delta = e.deltaY > 0 ? -5 : 5;
         updateZoom(delta, e.clientX, e.clientY);
     });
 
@@ -251,8 +251,8 @@ function resetPreview() {
 
 // Event Listeners
 function initializeEventListeners() {
-    elements.zoomIn.addEventListener('click', () => updateZoom(10));
-    elements.zoomOut.addEventListener('click', () => updateZoom(-10));
+    elements.zoomIn.addEventListener('click', () => updateZoom(5));
+    elements.zoomOut.addEventListener('click', () => updateZoom(-5));
     elements.themeToggle.addEventListener('click', toggleTheme);
     elements.toggleEditor.addEventListener('click', toggleEditorCollapse);
 }
