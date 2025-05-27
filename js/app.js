@@ -39,7 +39,7 @@ console.log('App initialized with elements:', elements);
 // Initialize CodeMirror
 function initializeCodeMirror() {
     state.editor = CodeMirror.fromTextArea(elements.mermaidInput, {
-        mode: 'javascript',
+        mode: 'mermaid',
         theme: state.isDarkMode ? 'monokai' : 'default',
         lineNumbers: true,
         lineWrapping: true,
