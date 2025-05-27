@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,43 +59,59 @@
             -moz-user-select: none;
             -ms-user-select: none;
         }
+        /* Theme transition */
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        /* Dark mode icon transitions */
+        .theme-icon {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .theme-icon.hidden {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        .theme-icon:not(.hidden) {
+            opacity: 1;
+            transform: scale(1);
+        }
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 min-h-screen">
     <!-- Menu Bar -->
-    <header class="bg-white dark:bg-gray-800 shadow-md fixed top-0 left-0 right-0 z-50">
+    <header class="bg-white dark:bg-gray-800 shadow-md fixed top-0 left-0 right-0 z-50 transition-colors duration-200">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between h-16">
                 <!-- Left side -->
                 <div class="flex items-center space-x-4">
-                    <span class="text-xl font-bold text-gray-800 dark:text-white">Mermaid Editor</span>
+                    <span class="text-xl font-bold text-gray-800 dark:text-white transition-colors duration-200">Mermaid Editor</span>
                 </div>
                 
                 <!-- Right side -->
                 <div class="flex items-center space-x-4">
                     <!-- Zoom Controls -->
                     <div class="flex items-center space-x-2">
-                        <button id="zoom-out" class="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                        <button id="zoom-out" class="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200">
                             <span class="material-icons">zoom_out</span>
                         </button>
-                        <span id="zoom-level" class="text-sm text-gray-600 dark:text-gray-300">100%</span>
-                        <button id="zoom-in" class="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+                        <span id="zoom-level" class="text-sm text-gray-600 dark:text-gray-300 transition-colors duration-200">100%</span>
+                        <button id="zoom-in" class="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200">
                             <span class="material-icons">zoom_in</span>
                         </button>
                     </div>
 
                     <!-- Export Button -->
                     <div class="relative group">
-                        <button id="export-btn" class="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                        <button id="export-btn" class="flex items-center space-x-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-lg transition-colors duration-200">
                             <span class="material-icons">download</span>
                             <span>Export</span>
                         </button>
-                        <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg hidden group-hover:block">
-                            <button id="export-png" class="w-full px-4 py-2 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg hidden group-hover:block transition-colors duration-200">
+                            <button id="export-png" class="w-full px-4 py-2 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
                                 <span class="material-icons align-middle mr-2">image</span>
                                 PNG
                             </button>
-                            <button id="export-svg" class="w-full px-4 py-2 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <button id="export-svg" class="w-full px-4 py-2 text-left text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
                                 <span class="material-icons align-middle mr-2">code</span>
                                 SVG
                             </button>
@@ -103,9 +119,9 @@
                     </div>
 
                     <!-- Theme Toggle -->
-                    <button id="theme-toggle" class="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
-                        <span class="material-icons dark:hidden">dark_mode</span>
-                        <span class="material-icons hidden dark:block">light_mode</span>
+                    <button id="theme-toggle" class="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-200">
+                        <span class="material-icons theme-icon" id="light-icon">wb_sunny</span>
+                        <span class="material-icons theme-icon hidden" id="dark-icon">nightlight_round</span>
                     </button>
                 </div>
             </div>
@@ -113,25 +129,25 @@
     </header>
 
     <!-- Main Content -->
-    <main class="pt-16 h-screen">
+    <main class="pt-16 h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-200">
         <!-- Preview (Full Screen) -->
-        <div id="mermaid-preview" class="w-full h-full bg-white dark:bg-gray-800">
-            <div class="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
+        <div id="mermaid-preview" class="w-full h-full bg-white dark:bg-gray-800 transition-colors duration-200">
+            <div class="flex items-center justify-center h-full text-gray-500 dark:text-gray-400 transition-colors duration-200">
                 <span class="material-icons mr-2">preview</span>
                 <span>Your diagram will appear here</span>
             </div>
         </div>
 
         <!-- Floating Code Editor -->
-        <div id="code-editor-container" class="fixed bottom-4 right-4 w-[600px] bg-white dark:bg-gray-800 rounded-lg shadow-xl transition-all duration-300">
+        <div id="code-editor-container" class="fixed bottom-4 right-4 w-[600px] bg-white dark:bg-gray-800 rounded-lg shadow-xl transition-colors duration-200">
             <!-- Editor Header -->
-            <div id="editor-header" class="flex items-center justify-between p-3 border-b dark:border-gray-700 cursor-move">
+            <div id="editor-header" class="flex items-center justify-between p-3 border-b dark:border-gray-700 cursor-move transition-colors duration-200">
                 <div class="flex items-center space-x-2">
-                    <span class="material-icons text-gray-600 dark:text-gray-300">code</span>
-                    <h3 class="text-sm font-medium text-gray-800 dark:text-white">Code Editor</h3>
+                    <span class="material-icons text-gray-600 dark:text-gray-300 transition-colors duration-200">code</span>
+                    <h3 class="text-sm font-medium text-gray-800 dark:text-white transition-colors duration-200">Code Editor</h3>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <button id="toggle-editor" class="p-1 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                    <button id="toggle-editor" class="p-1 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors duration-200">
                         <span class="material-icons">expand_more</span>
                     </button>
                 </div>

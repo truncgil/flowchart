@@ -4,7 +4,7 @@ const state = {
     diagramSvg: null,
     isRendering: false,
     zoomLevel: 100,
-    isDarkMode: false,
+    isDarkMode: localStorage.getItem('darkMode') === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches,
     editor: null,
     isEditorCollapsed: false
 };
@@ -17,6 +17,8 @@ const elements = {
     zoomOut: document.getElementById('zoom-out'),
     zoomLevel: document.getElementById('zoom-level'),
     themeToggle: document.getElementById('theme-toggle'),
+    lightIcon: document.getElementById('light-icon'),
+    darkIcon: document.getElementById('dark-icon'),
     exportBtn: document.getElementById('export-btn'),
     exportPng: document.getElementById('export-png'),
     exportSvg: document.getElementById('export-svg'),
@@ -117,13 +119,48 @@ function toggleEditorCollapse() {
 // Theme handling
 function toggleTheme() {
     state.isDarkMode = !state.isDarkMode;
-    document.documentElement.classList.toggle('dark');
+    
+    // Update localStorage
     localStorage.setItem('darkMode', state.isDarkMode);
+    
+    // Update document class
+    if (state.isDarkMode) {
+        document.documentElement.classList.remove('light');
+        document.documentElement.classList.add('dark');
+        elements.lightIcon.classList.add('hidden');
+        elements.darkIcon.classList.remove('hidden');
+    } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        elements.lightIcon.classList.remove('hidden');
+        elements.darkIcon.classList.add('hidden');
+    }
     
     // Update CodeMirror theme
     if (state.editor) {
         state.editor.setOption('theme', state.isDarkMode ? 'monokai' : 'default');
     }
+
+    // Force a reflow to ensure transitions work
+    document.body.offsetHeight;
+}
+
+// Initialize theme
+function initializeTheme() {
+    if (state.isDarkMode) {
+        document.documentElement.classList.remove('light');
+        document.documentElement.classList.add('dark');
+        elements.lightIcon.classList.add('hidden');
+        elements.darkIcon.classList.remove('hidden');
+    } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+        elements.lightIcon.classList.remove('hidden');
+        elements.darkIcon.classList.add('hidden');
+    }
+
+    // Force a reflow to ensure transitions work
+    document.body.offsetHeight;
 }
 
 // Zoom handling
@@ -181,11 +218,7 @@ function initialize() {
     console.log('Initializing app...');
     
     // Initialize theme
-    if (localStorage.getItem('darkMode') === 'true' || 
-        window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        state.isDarkMode = true;
-        document.documentElement.classList.add('dark');
-    }
+    initializeTheme();
 
     // Initialize CodeMirror
     initializeCodeMirror();
