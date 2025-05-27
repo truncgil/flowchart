@@ -1,0 +1,20 @@
+{
+  "name": "mermaid-wizard",
+  "version": "1.0.0",
+  "description": "A modern, responsive web application for creating flowcharts using Mermaid.js",
+  "scripts": {
+    "start": "http-server -c-1",
+    "build": "npm run clean && npm run copy-all",
+    "clean": "if exist dist rmdir /S /Q dist",
+    "copy-all": "npm run create-dirs && npm run copy-files",
+    "create-dirs": "mkdir dist && mkdir dist\\assets && mkdir dist\\js && mkdir dist\\lib",
+    "copy-files": "copy index.html dist\\ && copy .htaccess dist\\ && copy favicon.ico dist\\ && xcopy /E /I /Y assets dist\\assets && xcopy /E /I /Y js dist\\js && xcopy /E /I /Y lib dist\\lib"
+  },
+  "dependencies": {
+    "mermaid": "^10.8.0",
+    "html-to-image": "^1.11.11"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+} 
