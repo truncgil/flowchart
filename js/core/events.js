@@ -32,7 +32,7 @@ function initializeEventListeners() {
 function toggleTheme() {
     state.isDarkMode = !state.isDarkMode;
     
-    // Update localStorage
+    // Update localStorage with user preference
     localStorage.setItem('darkMode', state.isDarkMode);
     
     // Update document class

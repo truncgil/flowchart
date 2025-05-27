@@ -4,7 +4,15 @@ export const state = {
     diagramSvg: null,
     isRendering: false,
     zoomLevel: 100,
-    isDarkMode: localStorage.getItem('darkMode') === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches,
+    isDarkMode: (() => {
+        // Check localStorage first
+        const storedTheme = localStorage.getItem('darkMode');
+        if (storedTheme !== null) {
+            return storedTheme === 'true';
+        }
+        // If no stored preference, use system preference
+        return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    })(),
     editor: null,
     isEditorCollapsed: false,
     // Preview pan state
