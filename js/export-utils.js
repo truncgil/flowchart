@@ -1,70 +1,124 @@
 // Export utilities
-const exportPngButton = document.getElementById('export-png');
-const exportSvgButton = document.getElementById('export-svg');
-const copyLinkButton = document.getElementById('copy-link');
+const elements = {
+    exportPng: document.getElementById('export-png'),
+    exportSvg: document.getElementById('export-svg')
+};
 
 // Export as PNG
-exportPngButton.addEventListener('click', async () => {
-    if (!state.diagramSvg) return;
-
+elements.exportPng.addEventListener('click', async () => {
     try {
-        const svgElement = previewContainer.querySelector('svg');
-        if (!svgElement) throw new Error('No SVG element found');
+        const previewContainer = document.getElementById('mermaid-preview');
+        const svg = previewContainer.querySelector('svg');
+        
+        if (!svg) {
+            throw new Error('No diagram to export');
+        }
 
-        // Convert SVG to PNG using dom-to-image
-        const dataUrl = await domtoimage.toPng(svgElement, {
+        // Show loading state
+        const loadingToast = showToast('Exporting PNG...', 'info');
+
+        // Convert SVG to PNG
+        const dataUrl = await domtoimage.toPng(svg, {
             quality: 1.0,
-            bgcolor: '#ffffff',
-            style: {
-                'transform': 'scale(1)',
-                'transform-origin': 'top left'
-            }
+            bgcolor: state.isDarkMode ? '#1f2937' : '#ffffff'
         });
 
         // Create download link
         const link = document.createElement('a');
-        link.download = 'flowchart.png';
+        link.download = 'mermaid-diagram.png';
         link.href = dataUrl;
         link.click();
+
+        // Show success message
+        showToast('PNG exported successfully!', 'success');
     } catch (error) {
         console.error('Error exporting PNG:', error);
-        alert('Error exporting PNG: ' + error.message);
+        showToast('Error exporting PNG: ' + error.message, 'error');
     }
 });
 
 // Export as SVG
-exportSvgButton.addEventListener('click', () => {
-    if (!state.diagramSvg) return;
-
+elements.exportSvg.addEventListener('click', () => {
     try {
+        const previewContainer = document.getElementById('mermaid-preview');
+        const svg = previewContainer.querySelector('svg');
+        
+        if (!svg) {
+            throw new Error('No diagram to export');
+        }
+
+        // Get SVG content
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+        const svgUrl = URL.createObjectURL(svgBlob);
+
         // Create download link
         const link = document.createElement('a');
-        link.download = 'flowchart.svg';
-        link.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(state.diagramSvg);
+        link.download = 'mermaid-diagram.svg';
+        link.href = svgUrl;
         link.click();
+
+        // Clean up
+        URL.revokeObjectURL(svgUrl);
+
+        // Show success message
+        showToast('SVG exported successfully!', 'success');
     } catch (error) {
         console.error('Error exporting SVG:', error);
-        alert('Error exporting SVG: ' + error.message);
+        showToast('Error exporting SVG: ' + error.message, 'error');
     }
 });
 
-// Copy shareable link
-copyLinkButton.addEventListener('click', () => {
-    const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => {
-        // Show success message
-        const originalText = copyLinkButton.textContent;
-        copyLinkButton.textContent = 'Copied!';
-        copyLinkButton.classList.add('bg-green-500');
-        copyLinkButton.classList.remove('bg-blue-500');
+// Toast notification system
+function showToast(message, type = 'info') {
+    // Create toast container if it doesn't exist
+    let toastContainer = document.getElementById('toast-container');
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'toast-container';
+        toastContainer.className = 'fixed bottom-4 right-4 z-50';
+        document.body.appendChild(toastContainer);
+    }
 
-        setTimeout(() => {
-            copyLinkButton.textContent = originalText;
-            copyLinkButton.classList.remove('bg-green-500');
-            copyLinkButton.classList.add('bg-blue-500');
-        }, 2000);
-    }).catch(error => {
-        console.error('Error copying link:', error);
-        alert('Error copying link: ' + error.message);
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = `flex items-center p-4 mb-4 rounded-lg shadow-lg transform transition-all duration-300 translate-y-2 opacity-0 ${
+        type === 'error' ? 'bg-red-500' :
+        type === 'success' ? 'bg-green-500' :
+        'bg-blue-500'
+    } text-white`;
+
+    // Add icon based on type
+    const icon = document.createElement('span');
+    icon.className = 'material-icons mr-2';
+    icon.textContent = type === 'error' ? 'error' :
+                      type === 'success' ? 'check_circle' :
+                      'info';
+    toast.appendChild(icon);
+
+    // Add message
+    const messageSpan = document.createElement('span');
+    messageSpan.textContent = message;
+    toast.appendChild(messageSpan);
+
+    // Add to container
+    toastContainer.appendChild(toast);
+
+    // Animate in
+    requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
     });
-}); 
+
+    // Remove after delay
+    setTimeout(() => {
+        toast.classList.add('translate-y-2', 'opacity-0');
+        setTimeout(() => {
+            toast.remove();
+            if (toastContainer.children.length === 0) {
+                toastContainer.remove();
+            }
+        }, 300);
+    }, 3000);
+
+    return toast;
+} 
