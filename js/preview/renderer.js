@@ -36,7 +36,7 @@ async function renderMermaidDiagram() {
         elements.mermaidPreview.innerHTML = '';
 
         // Create a unique ID for this diagram
-        const diagramId = 'mermaid-diagram-' + Date.now();
+        const diagramId = 'truncgil-flowchart-diagram-' + Date.now();
 
         // Create and append the diagram container
         const diagramDiv = document.createElement('div');
@@ -52,11 +52,6 @@ async function renderMermaidDiagram() {
             // Create a new div for the SVG
             const svgContainer = document.createElement('div');
             svgContainer.className = 'mermaid-svg-container';
-            svgContainer.style.width = '100%';
-            svgContainer.style.height = '100%';
-            svgContainer.style.display = 'flex';
-            svgContainer.style.alignItems = 'center';
-            svgContainer.style.justifyContent = 'center';
             
             // Insert the SVG
             svgContainer.innerHTML = svg;
@@ -69,17 +64,21 @@ async function renderMermaidDiagram() {
             const svgElement = svgContainer.querySelector('svg');
             if (svgElement) {
                 // Set SVG attributes for proper display
-                svgElement.style.width = '100%';
-                svgElement.style.height = '100%';
-                svgElement.style.maxWidth = '100%';
-                svgElement.style.maxHeight = '100%';
+                svgElement.removeAttribute('width');
+                svgElement.removeAttribute('height');
+                svgElement.style.width = 'auto';
+                svgElement.style.height = 'auto';
+                svgElement.style.maxWidth = 'none';
+                svgElement.style.maxHeight = 'none';
+                
+                // Set viewBox to ensure proper scaling
+                const bbox = svgElement.getBBox();
+                svgElement.setAttribute('viewBox', `0 0 ${bbox.width} ${bbox.height}`);
                 
                 state.diagramSvg = svgElement.outerHTML;
                 updateUrlWithCode();
 
                 // Make SVG elements draggable
-                svgElement.setAttribute('width', '100%');
-                svgElement.setAttribute('height', '100%');
                 svgElement.style.cursor = 'grab';
 
                 // Make all flowchart nodes draggable

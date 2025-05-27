@@ -18,7 +18,7 @@ function exportAsSvg() {
 
         // Create download link
         const link = document.createElement('a');
-        link.download = 'mermaid-diagram.svg';
+        link.download = 'truncgil-flowchart-diagram.svg';
         link.href = svgUrl;
         link.click();
 

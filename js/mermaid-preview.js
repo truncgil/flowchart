@@ -34,7 +34,7 @@ export async function renderMermaidDiagram() {
         previewContainer.innerHTML = '';
 
         // Create a unique ID for this diagram
-        const diagramId = 'mermaid-diagram-' + Date.now();
+        const diagramId = 'truncgil-flowchart-diagram-' + Date.now();
         console.log('Creating diagram with ID:', diagramId);
 
         // Create and append the diagram container

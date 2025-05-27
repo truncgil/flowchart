@@ -22,7 +22,7 @@ async function exportAsPng() {
 
         // Create download link
         const link = document.createElement('a');
-        link.download = 'mermaid-diagram.png';
+        link.download = 'truncgil-flowchart-diagram.png';
         link.href = dataUrl;
         link.click();
 

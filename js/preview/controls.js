@@ -44,7 +44,7 @@ function initializePreviewControls() {
 
 function updateZoom(delta, mouseX, mouseY) {
     const oldZoom = state.zoomLevel;
-    state.zoomLevel = Math.max(50, Math.min(200, state.zoomLevel + delta));
+    state.zoomLevel = Math.max(10, Math.min(500, state.zoomLevel + delta));
     
     if (mouseX && mouseY) {
         // Calculate mouse position relative to preview
@@ -63,8 +63,11 @@ function updateZoom(delta, mouseX, mouseY) {
 }
 
 function updatePreviewTransform() {
-    elements.mermaidPreview.style.transform = `translate(${state.translateX}px, ${state.translateY}px) scale(${state.zoomLevel / 100})`;
-    elements.mermaidPreview.style.transformOrigin = '0 0';
+    const svgContainer = elements.mermaidPreview.querySelector('.mermaid-svg-container');
+    if (svgContainer) {
+        svgContainer.style.transform = `translate(${state.translateX}px, ${state.translateY}px) scale(${state.zoomLevel / 100})`;
+        svgContainer.style.transformOrigin = '0 0';
+    }
 }
 
 function resetPreview() {

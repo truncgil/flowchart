@@ -27,7 +27,7 @@ exportElements.exportPng.addEventListener('click', async () => {
 
         // Create download link
         const link = document.createElement('a');
-        link.download = 'mermaid-diagram.png';
+        link.download = 'truncgil-flowchart-diagram.png';
         link.href = dataUrl;
         link.click();
 
@@ -56,7 +56,7 @@ exportElements.exportSvg.addEventListener('click', () => {
 
         // Create download link
         const link = document.createElement('a');
-        link.download = 'mermaid-diagram.svg';
+        link.download = 'truncgil-flowchart-diagram.svg';
         link.href = svgUrl;
         link.click();
 
