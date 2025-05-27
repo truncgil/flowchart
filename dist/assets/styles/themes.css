@@ -1,0 +1,122 @@
+/* Theme-related styles */
+
+/* Light theme */
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f3f4f6;
+    --text-primary: #1f2937;
+    --text-secondary: #4b5563;
+    --border-color: #e5e7eb;
+    --primary-color: #85E1E6;
+    --primary-hover: #6BCFD4;
+    --primary-light: #E6F7F8;
+    --primary-dark: #4BB5BC;
+}
+
+/* Dark theme */
+.dark {
+    --bg-primary: #1f2937;
+    --bg-secondary: #111827;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --border-color: #374151;
+    --primary-color: #85E1E6;
+    --primary-hover: #6BCFD4;
+    --primary-light: #2A4A4C;
+    --primary-dark: #4BB5BC;
+}
+
+/* Theme transitions */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Theme toggle icons */
+.theme-icon {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.theme-icon.hidden {
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.theme-icon:not(.hidden) {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Preview container themes */
+#mermaid-preview {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* Editor container themes */
+#code-editor-container {
+    background-color: var(--bg-primary);
+    border-color: var(--border-color);
+}
+
+#editor-header {
+    border-color: var(--border-color);
+    background-color: var(--primary-light);
+}
+
+/* Button themes */
+button {
+    color: var(--text-secondary);
+}
+
+button:hover {
+    background-color: var(--bg-secondary);
+}
+
+/* Primary buttons */
+button.primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+button.primary:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Export button themes */
+#export-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+#export-btn:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Toast themes */
+.toast {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+/* Header accent */
+header {
+    border-bottom: 2px solid var(--primary-color);
+}
+
+/* Active elements */
+.active {
+    color: var(--primary-color);
+}
+
+/* Focus states */
+:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Selection color */
+::selection {
+    background-color: var(--primary-light);
+    color: var(--text-primary);
+} 
