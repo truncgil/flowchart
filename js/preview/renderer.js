@@ -2,6 +2,14 @@
 import { state } from '../core/state.js';
 import { elements } from '../core/events.js';
 
+// Initialize drag state
+let isDragging = false;
+let currentElement = null;
+let startX = 0;
+let startY = 0;
+let initialX = 0;
+let initialY = 0;
+
 function validateMermaidSyntax(code) {
     if (!code.trim()) {
         throw new Error('Please enter some Mermaid.js syntax');
@@ -68,6 +76,26 @@ async function renderMermaidDiagram() {
                 
                 state.diagramSvg = svgElement.outerHTML;
                 updateUrlWithCode();
+
+                // Make SVG elements draggable
+                svgElement.setAttribute('width', '100%');
+                svgElement.setAttribute('height', '100%');
+                svgElement.style.cursor = 'grab';
+
+                // Make all flowchart nodes draggable
+                const nodes = svgElement.querySelectorAll('.node');
+                nodes.forEach(node => {
+                    node.style.cursor = 'move';
+                    node.setAttribute('data-draggable', 'true');
+                    
+                    // Add drag event listeners
+                    node.addEventListener('mousedown', startDrag);
+                });
+
+                // Add mouse move and up listeners to the SVG
+                svgElement.addEventListener('mousemove', drag);
+                svgElement.addEventListener('mouseup', endDrag);
+                svgElement.addEventListener('mouseleave', endDrag);
             } else {
                 throw new Error('SVG element not found after rendering');
             }
@@ -112,6 +140,92 @@ function updateUrlWithCode() {
     } catch (error) {
         console.error('Error updating URL:', error);
     }
+}
+
+// Drag and drop functions
+function startDrag(e) {
+    if (e.target.getAttribute('data-draggable') === 'true') {
+        isDragging = true;
+        currentElement = e.target;
+        
+        // Get initial position
+        const transform = currentElement.getAttribute('transform');
+        if (transform) {
+            const match = transform.match(/translate\(([^,]+),([^)]+)\)/);
+            if (match) {
+                initialX = parseFloat(match[1]);
+                initialY = parseFloat(match[2]);
+            }
+        }
+
+        // Get mouse position
+        const svg = currentElement.closest('svg');
+        const CTM = svg.getScreenCTM();
+        startX = (e.clientX - CTM.e) / CTM.a;
+        startY = (e.clientY - CTM.f) / CTM.d;
+
+        // Change cursor
+        currentElement.style.cursor = 'grabbing';
+        svg.style.cursor = 'grabbing';
+    }
+}
+
+function drag(e) {
+    if (!isDragging || !currentElement) return;
+
+    // Get current mouse position
+    const svg = currentElement.closest('svg');
+    const CTM = svg.getScreenCTM();
+    const currentX = (e.clientX - CTM.e) / CTM.a;
+    const currentY = (e.clientY - CTM.f) / CTM.d;
+
+    // Calculate new position
+    const newX = initialX + (currentX - startX);
+    const newY = initialY + (currentY - startY);
+
+    // Update element position
+    currentElement.setAttribute('transform', `translate(${newX},${newY})`);
+
+    // Update connected edges
+    updateConnectedEdges(currentElement);
+}
+
+function endDrag() {
+    if (isDragging && currentElement) {
+        isDragging = false;
+        currentElement.style.cursor = 'move';
+        currentElement.closest('svg').style.cursor = 'grab';
+        currentElement = null;
+    }
+}
+
+// Update connected edges when a node is moved
+function updateConnectedEdges(node) {
+    const nodeId = node.id;
+    const edges = document.querySelectorAll(`.edgePath[data-edge-id*="${nodeId}"]`);
+    
+    edges.forEach(edge => {
+        // Force Mermaid to redraw the edge
+        const path = edge.querySelector('path');
+        if (path) {
+            path.setAttribute('d', path.getAttribute('d'));
+        }
+    });
+}
+
+// Initialize live preview
+export function initializeLivePreview() {
+    // Initial render
+    renderMermaidDiagram();
+
+    // Set up auto-update
+    state.editor.on('change', () => {
+        clearTimeout(state.previewTimeout);
+        state.previewTimeout = setTimeout(() => {
+            state.mermaidCode = state.editor.getValue();
+            renderMermaidDiagram();
+        }, 500);
+    });
 }
 
 export { renderMermaidDiagram, validateMermaidSyntax }; 

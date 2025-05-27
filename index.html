@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mermaid.js Flowchart Editor</title>
+    <title>Truncgil Flowchart Editor</title>
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- CodeMirror -->
@@ -15,7 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/anyword-hint.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.css" rel="stylesheet">
-    <!-- Custom Mermaid mode -->
+    <!-- Custom TruncgilFlowchart mode -->
     <script src="js/editor/mode.js"></script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -93,7 +93,9 @@
             <div class="flex items-center justify-between h-16">
                 <!-- Left side -->
                 <div class="flex items-center space-x-4">
-                    <span class="text-xl font-bold text-gray-800 dark:text-white transition-colors duration-200">Mermaid Editor</span>
+                    <span class="text-xl font-bold text-gray-800 dark:text-white transition-colors duration-200">
+                        <img src="assets/icons/logo.svg" alt="Truncgil Logo" class="h-10">
+                    </span>
                 </div>
                 
                 <!-- Right side -->
@@ -174,19 +176,19 @@
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dom-to-image@2.6.0/dist/dom-to-image.min.js"></script>
 
-    <!-- Initialize Mermaid and load app -->
+    <!-- Initialize TruncgilFlowchart and load app -->
     <script type="module">
-        // Wait for Mermaid to load
-        function waitForMermaid(callback) {
+        // Wait for TruncgilFlowchart to load
+        function waitForTruncgilFlowchart(callback) {
             if (window.mermaid) {
                 callback();
             } else {
-                setTimeout(() => waitForMermaid(callback), 100);
+                setTimeout(() => waitForTruncgilFlowchart(callback), 100);
             }
         }
 
-        waitForMermaid(() => {
-            console.log('Initializing Mermaid...');
+        waitForTruncgilFlowchart(() => {
+            console.log('Initializing TruncgilFlowchart...');
             mermaid.initialize({
                 startOnLoad: false,
                 theme: 'default',
@@ -197,7 +199,7 @@
                     curve: 'basis'
                 }
             });
-            console.log('Mermaid initialized');
+            console.log('TruncgilFlowchart initialized');
 
             // Load main app module
             import('./js/core/app.js')

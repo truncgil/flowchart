@@ -34,6 +34,14 @@ export function initializeMermaid() {
         flowchart: {
             htmlLabels: true,
             curve: 'basis'
+        },
+        themeVariables: {
+            primaryColor: '#85E1E6',
+            primaryTextColor: '#1f2937',
+            primaryBorderColor: '#6BCFD4',
+            lineColor: '#85E1E6',
+            secondaryColor: '#E6F7F8',
+            tertiaryColor: '#4BB5BC'
         }
     });
 } 

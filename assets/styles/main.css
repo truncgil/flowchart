@@ -43,6 +43,24 @@ main {
     justify-content: center;
 }
 
+/* Draggable flowchart elements */
+.node {
+    transition: transform 0.1s ease;
+}
+
+.node:hover {
+    filter: brightness(1.1);
+}
+
+.node:active {
+    filter: brightness(0.95);
+}
+
+/* Edge animations */
+.edgePath {
+    transition: d 0.1s ease;
+}
+
 /* Editor container */
 #code-editor-container {
     position: fixed;

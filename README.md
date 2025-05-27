@@ -1,155 +1,247 @@
-# Mermaid.js Flowchart Wizard
+# Trunçgil Flowchart
 
-A modern, responsive web application that allows users to create, preview, and export flowcharts using Mermaid.js syntax.
+A powerful, enterprise-grade flowchart creation and management platform built with modern web technologies. This application enables users to create, collaborate, and manage complex flowcharts with advanced features and real-time collaboration capabilities.
 
-## 🚀 Features
+## 🌟 Key Features
 
-- **Real-time Preview**: See your flowchart come to life as you type
-- **Intelligent Editor**: CodeMirror integration with Mermaid-specific autocomplete
-- **Export Options**: Download your diagrams as PNG or SVG
-- **Responsive Design**: Works seamlessly on all devices
-- **Modern UI**: Built with Tailwind CSS for a beautiful interface
-- **Dark Mode**: Toggle between light and dark themes
+### Core Features
+- **Advanced Real-time Preview**: Instant visualization with intelligent error detection
+- **Enterprise-grade Editor**: Monaco Editor integration with advanced Mermaid syntax support
+- **Multi-format Export**: Export diagrams in PNG, SVG, PDF, and interactive HTML formats
+- **Responsive Design**: Seamless experience across all devices and screen sizes
+- **Modern UI/UX**: Material Design-inspired interface with Tailwind CSS
+- **Theme Support**: Light, Dark, and Custom theme options
+- **Real-time Collaboration**: Multiple users can edit simultaneously
+- **Version Control**: Track changes and revert to previous versions
+- **Template Library**: Pre-built flowchart templates for common use cases
+
+### Advanced Features
+- **AI-Powered Suggestions**: Intelligent flowchart completion and optimization
+- **Custom Node Types**: Create and save custom node templates
+- **Advanced Styling**: Custom CSS support for diagram elements
+- **Export Analytics**: Track diagram usage and modifications
+- **API Integration**: RESTful API for programmatic access
+- **Cloud Storage**: Automatic saving and synchronization
+- **Access Control**: Role-based access management
+- **Audit Logging**: Track all changes and user actions
 
 ## 🛠️ Technology Stack
 
-- **Frontend**: HTML, JavaScript, Tailwind CSS
-- **Editor**: CodeMirror with custom Mermaid mode
-- **Diagram Engine**: [Mermaid.js](https://mermaid-js.github.io/)
-- **Export Tools**: 
-  - SVG: Native Mermaid export
-  - PNG: DOM-to-image conversion
+### Frontend
+- **Core**: HTML5, TypeScript, Tailwind CSS
+- **Editor**: Monaco Editor with custom Mermaid language support
+- **State Management**: Redux Toolkit
+- **UI Components**: Headless UI, Radix UI
+- **Styling**: Tailwind CSS, CSS Modules
+- **Build Tools**: Vite, esbuild
+
+### Backend (Optional)
+- **Runtime**: Node.js
+- **Framework**: Express.js
+- **Database**: PostgreSQL
+- **Cache**: Redis
+- **Authentication**: JWT, OAuth2
+- **Real-time**: Socket.IO
+
+### Diagram Engine
+- **Core**: [Mermaid.js](https://mermaid-js.github.io/)
+- **Extensions**: Custom plugins for advanced features
+- **Rendering**: SVG with Canvas fallback
+
+### Export Tools
+- **SVG**: Native Mermaid export with custom styling
+- **PNG**: High-resolution export with custom DPI
+- **PDF**: Multi-page support with custom layouts
+- **HTML**: Interactive diagrams with zoom/pan
 
 ## 📁 Project Structure
 
 ```bash
-mermaid-wizard/
-├── index.html              # Main application entry point
-├── assets/                 # Static assets
-│   ├── styles/            # CSS styles
-│   │   ├── main.css      # Main styles
-│   │   ├── editor.css    # Editor-specific styles
-│   │   └── themes.css    # Theme-related styles
-│   └── icons/            # Application icons
-├── js/                    # JavaScript modules
-│   ├── core/             # Core functionality
-│   │   ├── app.js        # Main application logic
-│   │   ├── state.js      # State management
-│   │   └── events.js     # Event handling
-│   ├── editor/           # Editor-related functionality
-│   │   ├── codemirror.js # CodeMirror initialization
-│   │   ├── hints.js      # Autocomplete hints
-│   │   └── mode.js       # Custom Mermaid mode
-│   ├── preview/          # Preview functionality
-│   │   ├── renderer.js   # Diagram rendering
-│   │   └── controls.js   # Preview controls (zoom, pan)
-│   └── export/           # Export functionality
-│       ├── png.js        # PNG export
-│       └── svg.js        # SVG export
-└── lib/                  # Third-party libraries
-    └── mermaid.min.js    # Mermaid.js library
+truncgil-flowchart/
+├── src/
+│   ├── components/           # React components
+│   │   ├── editor/          # Editor components
+│   │   ├── preview/         # Preview components
+│   │   ├── toolbar/         # Toolbar components
+│   │   └── common/          # Shared components
+│   ├── features/            # Feature modules
+│   │   ├── auth/           # Authentication
+│   │   ├── collaboration/  # Real-time collaboration
+│   │   ├── export/         # Export functionality
+│   │   └── templates/      # Template management
+│   ├── hooks/              # Custom React hooks
+│   ├── services/           # API services
+│   ├── store/              # State management
+│   ├── styles/             # Global styles
+│   ├── types/              # TypeScript definitions
+│   └── utils/              # Utility functions
+├── public/                 # Static assets
+├── tests/                  # Test files
+├── docs/                   # Documentation
+└── config/                 # Configuration files
 ```
 
-## 🎯 Module Descriptions
+## 🎯 Module Specifications
 
-### Core Modules
-- **app.js**: Main application initialization and coordination
-- **state.js**: Application state management
-- **events.js**: Global event handling
+### Editor Module
+- **Monaco Integration**
+  - Custom Mermaid language support
+  - Intelligent code completion
+  - Syntax error detection
+  - Code formatting
+  - Multi-cursor support
+  - Find and replace
 
-### Editor Modules
-- **codemirror.js**: CodeMirror editor setup and configuration
-- **hints.js**: Mermaid-specific autocomplete functionality
-- **mode.js**: Custom Mermaid syntax highlighting mode
+### Preview Module
+- **Rendering Engine**
+  - Real-time diagram updates
+  - Error boundary handling
+  - Performance optimization
+  - Responsive scaling
+  - Custom styling support
 
-### Preview Modules
-- **renderer.js**: Mermaid diagram rendering and error handling
-- **controls.js**: Preview controls (zoom, pan, reset)
+### Export Module
+- **Format Support**
+  - PNG (High DPI support)
+  - SVG (Vector graphics)
+  - PDF (Multi-page)
+  - HTML (Interactive)
+  - Custom formats
 
-### Export Modules
-- **png.js**: PNG export functionality
-- **svg.js**: SVG export functionality
+### Collaboration Module
+- **Real-time Features**
+  - Multi-user editing
+  - Cursor presence
+  - Change tracking
+  - Conflict resolution
+  - Chat integration
 
-## 💡 How to Use
-
-### Basic Usage
-1. Open the application in your browser
-2. Start typing Mermaid syntax in the editor
-3. See the preview update in real-time
-4. Use the export menu to download your diagram
-
-### Editor Features
-- **Autocomplete**: Press `Ctrl+Space` for suggestions
-- **Syntax Highlighting**: Mermaid-specific syntax highlighting
-- **Live Preview**: Real-time diagram updates
-- **Error Handling**: Visual feedback for syntax errors
-
-### Preview Controls
-- **Zoom**: Use mouse wheel or zoom buttons
-- **Pan**: Click and drag to move the diagram
-- **Reset**: Double-click to reset view
-
-### Export Options
-- **PNG**: Download as PNG image
-- **SVG**: Download as SVG vector file
-
-## 🔧 Development
+## 💻 Development Guide
 
 ### Prerequisites
-- Modern web browser
-- Node.js (for development)
-- npm or yarn (for development)
+- Node.js (v18+)
+- npm or yarn
+- Git
+- Modern IDE (VS Code recommended)
 
-### Local Development
-1. Clone the repository
-2. Install dependencies (if any)
-3. Open `index.html` in your browser
-4. Make changes to the source files
-5. Refresh to see your changes
-
-### Building
+### Setup
 ```bash
+# Clone repository
+git clone https://github.com/your-org/truncgil-flowchart.git
+
 # Install dependencies
 npm install
 
 # Start development server
 npm run dev
 
+# Run tests
+npm test
+
 # Build for production
 npm run build
 ```
 
-## 🧪 Testing
+### Development Workflow
+1. Create feature branch
+2. Implement changes
+3. Write tests
+4. Update documentation
+5. Create pull request
+6. Code review
+7. Merge to main
 
-### Manual Testing Checklist
-- [ ] Syntax highlighting works correctly
-- [ ] Autocomplete suggestions are accurate
-- [ ] Real-time preview updates properly
-- [ ] Export functions work in all browsers
-- [ ] Dark mode toggle works correctly
-- [ ] Responsive design works on all devices
+## 🧪 Testing Strategy
 
-## 🤝 Contributing
+### Unit Tests
+- Component testing
+- Utility function testing
+- State management testing
+- API integration testing
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+### Integration Tests
+- End-to-end workflows
+- User interaction flows
+- Export functionality
+- Collaboration features
+
+### Performance Tests
+- Load testing
+- Stress testing
+- Memory leak detection
+- Rendering performance
+
+## 🔒 Security Measures
+
+### Authentication
+- JWT-based authentication
+- OAuth2 integration
+- Role-based access control
+- Session management
+
+### Data Protection
+- Input sanitization
+- XSS prevention
+- CSRF protection
+- Rate limiting
+
+### Compliance
+- GDPR compliance
+- Data encryption
+- Audit logging
+- Privacy controls
+
+## 📈 Performance Optimization
+
+### Frontend
+- Code splitting
+- Lazy loading
+- Tree shaking
+- Asset optimization
+- Caching strategies
+
+### Backend
+- Query optimization
+- Connection pooling
+- Load balancing
+- Caching layers
+
+## 🌐 Browser Support
+
+- Chrome (latest 2 versions)
+- Firefox (latest 2 versions)
+- Safari (latest 2 versions)
+- Edge (latest 2 versions)
+
+## 📱 Mobile Support
+
+- Responsive design
+- Touch gestures
+- Mobile-optimized UI
+- Offline support
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## 🤝 Contributing
 
-- [Mermaid.js](https://mermaid-js.github.io/) for the powerful diagramming library
-- [CodeMirror](https://codemirror.net/) for the code editor
-- [Tailwind CSS](https://tailwindcss.com/) for the utility-first CSS framework
+1. Fork the repository
+2. Create feature branch
+3. Commit changes
+4. Push to branch
+5. Create pull request
 
 ## 📞 Support
 
-If you encounter any issues or have questions:
-1. Check the [documentation](https://mermaid-js.github.io/)
-2. Open an issue in the GitHub repository
-3. Contact the maintainers 
+- Documentation: [docs.truncgil.com](https://docs.truncgil.com)
+- Issues: GitHub Issues
+- Email: support@truncgil.com
+- Community: Discord Server
+
+## 🙏 Acknowledgments
+
+- Mermaid.js team
+- Monaco Editor team
+- Tailwind CSS team
+- All contributors 
