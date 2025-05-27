@@ -1,5 +1,5 @@
 // PNG export functionality
-import state from '../core/state.js';
+import { state } from '../core/state.js';
 import { elements } from '../core/events.js';
 
 async function exportAsPng() {

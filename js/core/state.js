@@ -1,5 +1,5 @@
-// State management
-const state = {
+// Core state management
+export const state = {
     mermaidCode: '',
     diagramSvg: null,
     isRendering: false,
@@ -12,7 +12,20 @@ const state = {
     startX: 0,
     startY: 0,
     translateX: 0,
-    translateY: 0
+    translateY: 0,
+    currentStep: 1
 };
 
-export default state; 
+// Initialize Mermaid
+export function initializeMermaid() {
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: state.isDarkMode ? 'dark' : 'default',
+        securityLevel: 'loose',
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+        flowchart: {
+            htmlLabels: true,
+            curve: 'basis'
+        }
+    });
+} 

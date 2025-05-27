@@ -1,5 +1,5 @@
 // Event handling
-import state from './state.js';
+import { state } from './state.js';
 
 // DOM Elements
 const elements = {

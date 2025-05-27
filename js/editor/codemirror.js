@@ -1,6 +1,7 @@
 // CodeMirror initialization
-import state from '../core/state.js';
+import { state } from '../core/state.js';
 import { elements } from '../core/events.js';
+import { renderMermaidDiagram } from '../preview/renderer.js';
 
 // Initialize CodeMirror
 function initializeCodeMirror() {

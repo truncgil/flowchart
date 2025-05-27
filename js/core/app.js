@@ -1,5 +1,5 @@
 // Main application module
-import state from './state.js';
+import { state, initializeMermaid } from './state.js';
 import { elements, initializeEventListeners } from './events.js';
 import initializeCodeMirror from '../editor/codemirror.js';
 import { initializePreviewControls } from '../preview/controls.js';
@@ -75,6 +75,9 @@ function initialize() {
     console.log('Initializing app...');
     
     try {
+        // Initialize Mermaid
+        initializeMermaid();
+
         // Initialize CodeMirror
         initializeCodeMirror();
 

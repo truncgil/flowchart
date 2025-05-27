@@ -1,3 +1,5 @@
+import { state } from './core/state.js';
+
 // Export utilities
 const exportElements = {
     exportPng: document.getElementById('export-png'),

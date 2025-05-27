@@ -1,3 +1,6 @@
+import { state, initializeMermaid } from './core/state.js';
+import { renderMermaidDiagram, initializeLivePreview } from './mermaid-preview.js';
+
 // State management
 const state = {
     mermaidCode: '',
@@ -292,6 +295,9 @@ function loadCodeFromUrl() {
 function initialize() {
     console.log('Initializing app...');
     
+    // Initialize Mermaid
+    initializeMermaid();
+    
     // Initialize theme
     initializeTheme();
 
@@ -309,6 +315,9 @@ function initialize() {
 
     // Load code from URL if exists
     loadCodeFromUrl();
+
+    // Initialize live preview
+    initializeLivePreview(elements.mermaidInput);
 
     console.log('App initialized');
 }
