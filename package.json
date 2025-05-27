@@ -1,0 +1,11 @@
+{
+  "name": "mermaid-wizard",
+  "version": "1.0.0",
+  "description": "A modern, responsive web application for creating flowcharts using Mermaid.js",
+  "scripts": {
+    "start": "http-server -c-1"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+} 

@@ -5,86 +5,131 @@ A modern, responsive web application that allows users to create, preview, and e
 ## 🚀 Features
 
 - **Real-time Preview**: See your flowchart come to life as you type
-- **3-Step Wizard Interface**: Simple and intuitive user experience
+- **Intelligent Editor**: CodeMirror integration with Mermaid-specific autocomplete
 - **Export Options**: Download your diagrams as PNG or SVG
 - **Responsive Design**: Works seamlessly on all devices
 - **Modern UI**: Built with Tailwind CSS for a beautiful interface
+- **Dark Mode**: Toggle between light and dark themes
 
 ## 🛠️ Technology Stack
 
 - **Frontend**: HTML, JavaScript, Tailwind CSS
+- **Editor**: CodeMirror with custom Mermaid mode
 - **Diagram Engine**: [Mermaid.js](https://mermaid-js.github.io/)
-- **Export Tools**: Native SVG export and DOM-to-image conversion for PNG
+- **Export Tools**: 
+  - SVG: Native Mermaid export
+  - PNG: DOM-to-image conversion
 
-## 📋 Prerequisites
+## 📁 Project Structure
 
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- No additional installation required - runs entirely in the browser
+```bash
+mermaid-wizard/
+├── index.html              # Main application entry point
+├── assets/                 # Static assets
+│   ├── styles/            # CSS styles
+│   │   ├── main.css      # Main styles
+│   │   ├── editor.css    # Editor-specific styles
+│   │   └── themes.css    # Theme-related styles
+│   └── icons/            # Application icons
+├── js/                    # JavaScript modules
+│   ├── core/             # Core functionality
+│   │   ├── app.js        # Main application logic
+│   │   ├── state.js      # State management
+│   │   └── events.js     # Event handling
+│   ├── editor/           # Editor-related functionality
+│   │   ├── codemirror.js # CodeMirror initialization
+│   │   ├── hints.js      # Autocomplete hints
+│   │   └── mode.js       # Custom Mermaid mode
+│   ├── preview/          # Preview functionality
+│   │   ├── renderer.js   # Diagram rendering
+│   │   └── controls.js   # Preview controls (zoom, pan)
+│   └── export/           # Export functionality
+│       ├── png.js        # PNG export
+│       └── svg.js        # SVG export
+└── lib/                  # Third-party libraries
+    └── mermaid.min.js    # Mermaid.js library
+```
 
-## 🚀 Getting Started
+## 🎯 Module Descriptions
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/mermaid-wizard.git
-   ```
+### Core Modules
+- **app.js**: Main application initialization and coordination
+- **state.js**: Application state management
+- **events.js**: Global event handling
 
-2. Open `index.html` in your web browser
+### Editor Modules
+- **codemirror.js**: CodeMirror editor setup and configuration
+- **hints.js**: Mermaid-specific autocomplete functionality
+- **mode.js**: Custom Mermaid syntax highlighting mode
 
-3. Start creating your flowcharts!
+### Preview Modules
+- **renderer.js**: Mermaid diagram rendering and error handling
+- **controls.js**: Preview controls (zoom, pan, reset)
+
+### Export Modules
+- **png.js**: PNG export functionality
+- **svg.js**: SVG export functionality
 
 ## 💡 How to Use
 
-### Step 1: Input
-- Enter your Mermaid.js syntax in the editor
-- Use the provided examples as a reference
-- Click "Next" to preview your diagram
+### Basic Usage
+1. Open the application in your browser
+2. Start typing Mermaid syntax in the editor
+3. See the preview update in real-time
+4. Use the export menu to download your diagram
 
-### Step 2: Preview
-- Review your flowchart in real-time
-- Make adjustments if needed
-- Click "Next" to proceed to export
+### Editor Features
+- **Autocomplete**: Press `Ctrl+Space` for suggestions
+- **Syntax Highlighting**: Mermaid-specific syntax highlighting
+- **Live Preview**: Real-time diagram updates
+- **Error Handling**: Visual feedback for syntax errors
 
-### Step 3: Export
-- Choose your preferred format (PNG or SVG)
-- Download your diagram
-- Share your creation with others
+### Preview Controls
+- **Zoom**: Use mouse wheel or zoom buttons
+- **Pan**: Click and drag to move the diagram
+- **Reset**: Double-click to reset view
 
-## 📝 Example Mermaid Syntax
-
-```mermaid
-graph TD
-    A[Start] --> B{Is it working?}
-    B -->|Yes| C[Great!]
-    B -->|No| D[Debug]
-    D --> B
-```
+### Export Options
+- **PNG**: Download as PNG image
+- **SVG**: Download as SVG vector file
 
 ## 🔧 Development
 
-### Project Structure
-```
-mermaid-wizard/
-├── index.html
-├── /assets
-│   ├── styles.css
-│   └── logo.svg
-├── /js
-│   ├── app.js
-│   ├── mermaid-preview.js
-│   └── export-utils.js
-└── /lib
-    └── mermaid.min.js
-```
+### Prerequisites
+- Modern web browser
+- Node.js (for development)
+- npm or yarn (for development)
 
 ### Local Development
 1. Clone the repository
-2. Open `index.html` in your browser
-3. Make changes to the source files
-4. Refresh to see your changes
+2. Install dependencies (if any)
+3. Open `index.html` in your browser
+4. Make changes to the source files
+5. Refresh to see your changes
+
+### Building
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+```
+
+## 🧪 Testing
+
+### Manual Testing Checklist
+- [ ] Syntax highlighting works correctly
+- [ ] Autocomplete suggestions are accurate
+- [ ] Real-time preview updates properly
+- [ ] Export functions work in all browsers
+- [ ] Dark mode toggle works correctly
+- [ ] Responsive design works on all devices
 
 ## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
@@ -99,16 +144,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Acknowledgments
 
 - [Mermaid.js](https://mermaid-js.github.io/) for the powerful diagramming library
+- [CodeMirror](https://codemirror.net/) for the code editor
 - [Tailwind CSS](https://tailwindcss.com/) for the utility-first CSS framework
-- All contributors who have helped shape this project
 
 ## 📞 Support
 
-If you encounter any issues or have questions, please:
+If you encounter any issues or have questions:
 1. Check the [documentation](https://mermaid-js.github.io/)
 2. Open an issue in the GitHub repository
-3. Contact the maintainers
-
----
-
-Made with ❤️ by [Your Name] 
+3. Contact the maintainers 

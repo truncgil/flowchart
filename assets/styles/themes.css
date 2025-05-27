@@ -1,0 +1,81 @@
+/* Theme-related styles */
+
+/* Light theme */
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f3f4f6;
+    --text-primary: #1f2937;
+    --text-secondary: #4b5563;
+    --border-color: #e5e7eb;
+}
+
+/* Dark theme */
+.dark {
+    --bg-primary: #1f2937;
+    --bg-secondary: #111827;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --border-color: #374151;
+}
+
+/* Theme transitions */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Theme toggle icons */
+.theme-icon {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.theme-icon.hidden {
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.theme-icon:not(.hidden) {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Preview container themes */
+#mermaid-preview {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* Editor container themes */
+#code-editor-container {
+    background-color: var(--bg-primary);
+    border-color: var(--border-color);
+}
+
+#editor-header {
+    border-color: var(--border-color);
+}
+
+/* Button themes */
+button {
+    color: var(--text-secondary);
+}
+
+button:hover {
+    background-color: var(--bg-secondary);
+}
+
+/* Export button themes */
+#export-btn {
+    background-color: #3b82f6;
+    color: white;
+}
+
+#export-btn:hover {
+    background-color: #2563eb;
+}
+
+/* Toast themes */
+.toast {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+} 
