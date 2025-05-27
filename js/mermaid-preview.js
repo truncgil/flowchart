@@ -1,6 +1,7 @@
+import { state } from './core/state.js';
+
 // Mermaid preview handling
 const previewContainer = document.getElementById('mermaid-preview');
-const mermaidInput = document.getElementById('mermaid-input');
 
 console.log('Mermaid preview initialized');
 
@@ -14,7 +15,7 @@ function validateMermaidSyntax(code) {
     }
 }
 
-async function renderMermaidDiagram() {
+export async function renderMermaidDiagram() {
     console.log('Starting render process');
     if (!state.mermaidCode) {
         console.log('No mermaid code to render');
@@ -114,12 +115,14 @@ async function renderMermaidDiagram() {
 
 // Live preview (optional)
 let previewTimeout;
-mermaidInput.addEventListener('input', () => {
-    clearTimeout(previewTimeout);
-    previewTimeout = setTimeout(() => {
-        if (state.currentStep === 2) {
-            state.mermaidCode = mermaidInput.value;
-            renderMermaidDiagram();
-        }
-    }, 500);
-}); 
+export function initializeLivePreview(mermaidInput) {
+    mermaidInput.addEventListener('input', () => {
+        clearTimeout(previewTimeout);
+        previewTimeout = setTimeout(() => {
+            if (state.currentStep === 2) {
+                state.mermaidCode = mermaidInput.value;
+                renderMermaidDiagram();
+            }
+        }, 500);
+    });
+} 

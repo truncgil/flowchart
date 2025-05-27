@@ -3,8 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mermaid.js Flowchart Editor</title>
+    <title>Truncgil Flowchart Editor</title>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- CodeMirror -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+    <!-- Add CodeMirror addons for autocomplete -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/anyword-hint.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.css" rel="stylesheet">
+    <!-- Custom TruncgilFlowchart mode -->
+    <script src="js/editor/mode.js"></script>
     <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -28,15 +42,10 @@
             }
         }
     </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- CodeMirror -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
-    <link rel="stylesheet" href="assets/styles.css">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="assets/styles/editor.css">
+    <link rel="stylesheet" href="assets/styles/themes.css">
     <style>
         /* Prevent text selection everywhere except code editor */
         body {
@@ -84,7 +93,9 @@
             <div class="flex items-center justify-between h-16">
                 <!-- Left side -->
                 <div class="flex items-center space-x-4">
-                    <span class="text-xl font-bold text-gray-800 dark:text-white transition-colors duration-200">Mermaid Editor</span>
+                    <span class="text-xl font-bold text-gray-800 dark:text-white transition-colors duration-200">
+                        <img src="assets/icons/logo.svg" alt="Truncgil Logo" class="h-10">
+                    </span>
                 </div>
                 
                 <!-- Right side -->
@@ -165,19 +176,19 @@
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dom-to-image@2.6.0/dist/dom-to-image.min.js"></script>
 
-    <!-- Initialize Mermaid -->
-    <script>
-        // Wait for Mermaid to load
-        function waitForMermaid(callback) {
+    <!-- Initialize TruncgilFlowchart and load app -->
+    <script type="module">
+        // Wait for TruncgilFlowchart to load
+        function waitForTruncgilFlowchart(callback) {
             if (window.mermaid) {
                 callback();
             } else {
-                setTimeout(() => waitForMermaid(callback), 100);
+                setTimeout(() => waitForTruncgilFlowchart(callback), 100);
             }
         }
 
-        waitForMermaid(() => {
-            console.log('Initializing Mermaid...');
+        waitForTruncgilFlowchart(() => {
+            console.log('Initializing TruncgilFlowchart...');
             mermaid.initialize({
                 startOnLoad: false,
                 theme: 'default',
@@ -188,32 +199,42 @@
                     curve: 'basis'
                 }
             });
-            console.log('Mermaid initialized');
+            console.log('TruncgilFlowchart initialized');
 
-            // Load app scripts after Mermaid is initialized
-            const scripts = [
-                'js/app.js',
-                'js/mermaid-preview.js',
-                'js/export-utils.js'
-            ];
-
-            function loadScript(src) {
-                return new Promise((resolve, reject) => {
-                    const script = document.createElement('script');
-                    script.src = src;
-                    script.onload = resolve;
-                    script.onerror = reject;
-                    document.body.appendChild(script);
+            // Load main app module
+            import('./js/core/app.js')
+                .then(module => {
+                    console.log('App module loaded successfully');
+                    try {
+                        module.initialize();
+                    } catch (error) {
+                        console.error('Error initializing app:', error);
+                        showError(error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading app module:', error);
+                    showError(error);
                 });
-            }
-
-            // Load scripts in sequence
-            scripts.reduce((promiseChain, script) => {
-                return promiseChain.then(() => loadScript(script));
-            }, Promise.resolve()).catch(error => {
-                console.error('Error loading scripts:', error);
-            });
         });
+
+        function showError(error) {
+            const preview = document.getElementById('mermaid-preview');
+            if (preview) {
+                preview.innerHTML = `
+                    <div class="flex items-center justify-center h-full">
+                        <div class="p-4 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 rounded-lg max-w-lg">
+                            <div class="flex items-center mb-2">
+                                <span class="material-icons mr-2">error</span>
+                                <p class="font-medium">Error Loading Application</p>
+                            </div>
+                            <p class="text-sm mt-1">${error.message}</p>
+                            <p class="text-sm mt-2">Please check the console for more details.</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
     </script>
 </body>
 </html> 
