@@ -6,8 +6,8 @@ const GEMINI_API_KEY = 'AIzaSyDMqZgcvL8XDfTvrO4b8jsyfQfOUKvfXrc';
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
 // Initialize Truncgil AI Editor
-function initializeDeepSeekEditor() {
-    state.deepseekEditor = CodeMirror.fromTextArea(elements.deepseekInput, {
+function initializeTruncgilAIEditor() {
+    state.truncgilAIEditor = CodeMirror.fromTextArea(elements.truncgilAIInput, {
         mode: 'javascript',
         theme: state.isDarkMode ? 'monokai' : 'default',
         lineNumbers: true,
@@ -22,7 +22,7 @@ function initializeDeepSeekEditor() {
     });
 
     // Set initial content
-    state.deepseekEditor.setValue(`// Write your code here
+    state.truncgilAIEditor.setValue(`// Write your code here
 // Example:
 function example() {
     console.log("Hello World");
@@ -30,7 +30,7 @@ function example() {
 
     // Handle convert button click
     elements.convertToFlowchart.addEventListener('click', async () => {
-        const code = state.deepseekEditor.getValue();
+        const code = state.truncgilAIEditor.getValue();
         try {
             // Show loading state
             elements.convertToFlowchart.disabled = true;
@@ -183,4 +183,4 @@ async function convertToFlowchart(code) {
 }
 
 // Export functions
-export { initializeDeepSeekEditor }; 
+export { initializeTruncgilAIEditor }; 

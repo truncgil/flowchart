@@ -2,38 +2,118 @@
 import { state } from './state.js';
 
 // DOM Elements
-const elements = {
-    mermaidInput: document.getElementById('mermaid-input'),
-    mermaidPreview: document.getElementById('mermaid-preview'),
+export const elements = {
+    // Editor elements
+    editor: document.getElementById('mermaid-input'),
+    editorContainer: document.getElementById('code-editor-container'),
+    editorHeader: document.getElementById('editor-header'),
+    toggleEditor: document.getElementById('toggle-editor'),
+    
+    // Truncgil AI Editor elements
+    truncgilAIInput: document.getElementById('truncgilAI-input'),
+    truncgilAIEditorContainer: document.getElementById('truncgilAI-editor-container'),
+    truncgilAIEditorHeader: document.getElementById('truncgilAI-editor-header'),
+    toggleTruncgilAIEditor: document.getElementById('toggle-truncgilAI-editor'),
+    convertToFlowchart: document.getElementById('convert-to-flowchart'),
+    
+    // Preview elements
+    preview: document.getElementById('mermaid-preview'),
     zoomIn: document.getElementById('zoom-in'),
     zoomOut: document.getElementById('zoom-out'),
     zoomLevel: document.getElementById('zoom-level'),
-    themeToggle: document.getElementById('theme-toggle'),
-    lightIcon: document.getElementById('light-icon'),
-    darkIcon: document.getElementById('dark-icon'),
+    
+    // Export elements
     exportBtn: document.getElementById('export-btn'),
     exportPng: document.getElementById('export-png'),
     exportSvg: document.getElementById('export-svg'),
-    editorContainer: document.getElementById('code-editor-container'),
-    editorHeader: document.getElementById('editor-header'),
-    editorContent: document.getElementById('editor-content'),
-    toggleEditor: document.getElementById('toggle-editor'),
-    // DeepSeek Editor Elements
-    deepseekInput: document.getElementById('deepseek-input'),
-    deepseekEditorContainer: document.getElementById('deepseek-editor-container'),
-    deepseekEditorHeader: document.getElementById('deepseek-editor-header'),
-    deepseekEditorContent: document.getElementById('deepseek-editor-content'),
-    toggleDeepseekEditor: document.getElementById('toggle-deepseek-editor'),
-    convertToFlowchart: document.getElementById('convert-to-flowchart')
+    
+    // Theme elements
+    themeToggle: document.getElementById('theme-toggle'),
+    lightIcon: document.getElementById('light-icon'),
+    darkIcon: document.getElementById('dark-icon')
 };
 
 // Initialize event listeners
-function initializeEventListeners() {
-    elements.zoomIn.addEventListener('click', () => updateZoom(10));
-    elements.zoomOut.addEventListener('click', () => updateZoom(-10));
-    elements.themeToggle.addEventListener('click', toggleTheme);
-    elements.toggleEditor.addEventListener('click', toggleEditorCollapse);
-    elements.toggleDeepseekEditor.addEventListener('click', toggleDeepseekEditorCollapse);
+export function initializeEvents() {
+    // Editor toggle
+    elements.toggleEditor.addEventListener('click', () => {
+        elements.editorContainer.classList.toggle('collapsed');
+        elements.toggleEditor.querySelector('.material-icons').textContent = 
+            elements.editorContainer.classList.contains('collapsed') ? 'expand_less' : 'expand_more';
+    });
+
+    // Truncgil AI Editor toggle
+    elements.toggleTruncgilAIEditor.addEventListener('click', () => {
+        elements.truncgilAIEditorContainer.classList.toggle('collapsed');
+        elements.toggleTruncgilAIEditor.querySelector('.material-icons').textContent = 
+            elements.truncgilAIEditorContainer.classList.contains('collapsed') ? 'expand_less' : 'expand_more';
+    });
+
+    // Make editors draggable
+    makeDraggable(elements.editorHeader, elements.editorContainer);
+    makeDraggable(elements.truncgilAIEditorHeader, elements.truncgilAIEditorContainer);
+
+    // Zoom controls
+    elements.zoomIn.addEventListener('click', () => {
+        const currentZoom = parseFloat(elements.zoomLevel.textContent);
+        if (currentZoom < 200) {
+            elements.zoomLevel.textContent = `${currentZoom + 10}%`;
+            elements.preview.style.transform = `scale(${(currentZoom + 10) / 100})`;
+        }
+    });
+
+    elements.zoomOut.addEventListener('click', () => {
+        const currentZoom = parseFloat(elements.zoomLevel.textContent);
+        if (currentZoom > 50) {
+            elements.zoomLevel.textContent = `${currentZoom - 10}%`;
+            elements.preview.style.transform = `scale(${(currentZoom - 10) / 100})`;
+        }
+    });
+
+    // Theme toggle
+    elements.themeToggle.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        elements.lightIcon.classList.toggle('hidden');
+        elements.darkIcon.classList.toggle('hidden');
+    });
+}
+
+// Helper function to make elements draggable
+function makeDraggable(handle, element) {
+    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    
+    handle.onmousedown = dragMouseDown;
+
+    function dragMouseDown(e) {
+        e.preventDefault();
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        e.preventDefault();
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        
+        const newTop = element.offsetTop - pos2;
+        const newLeft = element.offsetLeft - pos1;
+        
+        // Keep element within window bounds
+        const maxTop = window.innerHeight - element.offsetHeight;
+        const maxLeft = window.innerWidth - element.offsetWidth;
+        
+        element.style.top = `${Math.min(Math.max(0, newTop), maxTop)}px`;
+        element.style.left = `${Math.min(Math.max(0, newLeft), maxLeft)}px`;
+    }
+
+    function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
 }
 
 // Theme handling
