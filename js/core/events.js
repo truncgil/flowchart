@@ -73,11 +73,7 @@ function initializeEvents() {
     });
 
     // Theme toggle
-    elements.themeToggle.addEventListener('click', () => {
-        document.documentElement.classList.toggle('dark');
-        elements.lightIcon.classList.toggle('hidden');
-        elements.darkIcon.classList.toggle('hidden');
-    });
+    elements.themeToggle.addEventListener('click', toggleTheme);
 }
 
 // Helper function to make elements draggable
@@ -129,14 +125,14 @@ function toggleTheme() {
     if (state.isDarkMode) {
         document.documentElement.classList.remove('light');
         document.documentElement.classList.add('dark');
-        elements.lightIcon.classList.add('hidden');
-        elements.darkIcon.classList.remove('hidden');
     } else {
         document.documentElement.classList.remove('dark');
         document.documentElement.classList.add('light');
-        elements.lightIcon.classList.remove('hidden');
-        elements.darkIcon.classList.add('hidden');
     }
+    
+    // Update theme icons
+    elements.lightIcon.classList.toggle('hidden', state.isDarkMode);
+    elements.darkIcon.classList.toggle('hidden', !state.isDarkMode);
     
     // Update CodeMirror theme
     if (state.editor) {
@@ -145,6 +141,9 @@ function toggleTheme() {
     if (state.truncgilAIEditor) {
         state.truncgilAIEditor.setOption('theme', state.isDarkMode ? 'monokai' : 'default');
     }
+    
+    // Force a reflow to ensure transitions work
+    document.body.offsetHeight;
 }
 
 // Toggle editor collapse

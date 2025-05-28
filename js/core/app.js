@@ -17,7 +17,7 @@ function initializeSystemPreferenceListener() {
         // Only update if user hasn't set a preference in localStorage
         if (localStorage.getItem('darkMode') === null) {
             state.isDarkMode = e.matches;
-            updateThemeUI();
+            updateTheme();
         }
     };
 
@@ -28,6 +28,9 @@ function initializeSystemPreferenceListener() {
         // For older browsers
         mediaQuery.addListener(handleSystemPreferenceChange);
     }
+
+    // Initial check
+    handleSystemPreferenceChange(mediaQuery);
 }
 
 // Update theme based on current state
@@ -184,4 +187,4 @@ function updateZoomUI() {
 }
 
 // Export functions
-export { updateThemeUI, updateZoomUI }; 
+export { updateThemeUI, updateZoomUI, updateTheme }; 

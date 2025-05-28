@@ -26,8 +26,23 @@ export const state = {
 
 // Initialize state
 export function initializeState() {
-    // Check for saved theme preference
-    state.isDarkMode = document.documentElement.classList.contains('dark');
+    // Check for saved theme preference in localStorage first, then system preference
+    const savedTheme = localStorage.getItem('darkMode');
+    if (savedTheme !== null) {
+        state.isDarkMode = savedTheme === 'true';
+    } else {
+        // If no saved preference, check system preference
+        state.isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    
+    // Apply initial theme
+    if (state.isDarkMode) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+    } else {
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
+    }
     
     // Initialize zoom level
     state.zoomLevel = 100;
