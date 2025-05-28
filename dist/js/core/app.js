@@ -1,9 +1,10 @@
 // Main application module
-import { state, initializeMermaid } from './state.js';
+import { state } from './state.js';
 import { elements, initializeEventListeners } from './events.js';
-import initializeCodeMirror from '../editor/codemirror.js';
+import { initializeCodeMirror } from '../editor/codemirror.js';
+import { initializeDeepSeekEditor } from '../editor/deepseek-editor.js';
+import { initializeLivePreview } from '../preview/renderer.js';
 import { initializePreviewControls } from '../preview/controls.js';
-import { renderMermaidDiagram } from '../preview/renderer.js';
 import exportAsPng from '../export/png.js';
 import exportAsSvg from '../export/svg.js';
 
@@ -16,7 +17,7 @@ function initializeSystemPreferenceListener() {
         // Only update if user hasn't set a preference in localStorage
         if (localStorage.getItem('darkMode') === null) {
             state.isDarkMode = e.matches;
-            updateTheme();
+            updateThemeUI();
         }
     };
 
@@ -104,7 +105,7 @@ function loadCodeFromUrl() {
             const decodedCode = decodeURIComponent(hash);
             state.editor.setValue(decodedCode);
             state.mermaidCode = decodedCode;
-            renderMermaidDiagram();
+            initializeLivePreview();
         } catch (e) {
             console.error('Invalid URL hash:', e);
             window.history.replaceState({}, '', window.location.pathname);
@@ -113,24 +114,28 @@ function loadCodeFromUrl() {
 }
 
 // Initialize the application
-function initialize() {
+export function initialize() {
     console.log('Initializing app...');
     
     try {
-        // Initialize Mermaid
-        initializeMermaid();
-
-        // Initialize CodeMirror
-        initializeCodeMirror();
-
-        // Initialize drag and drop
-        initializeDragAndDrop();
-
-        // Initialize preview controls
-        initializePreviewControls();
+        // Initialize state
+        state.isDarkMode = document.documentElement.classList.contains('dark');
+        state.isEditorCollapsed = false;
+        state.zoomLevel = 100;
+        state.previewTimeout = null;
 
         // Initialize event listeners
         initializeEventListeners();
+
+        // Initialize CodeMirror editors
+        initializeCodeMirror();
+        initializeDeepSeekEditor();
+
+        // Initialize live preview
+        initializeLivePreview();
+
+        // Initialize preview controls
+        initializePreviewControls();
 
         // Initialize system preference listener
         initializeSystemPreferenceListener();
@@ -144,6 +149,10 @@ function initialize() {
 
         // Load code from URL if exists
         loadCodeFromUrl();
+
+        // Update UI based on initial state
+        updateThemeUI();
+        updateZoomUI();
 
         console.log('App initialized successfully');
     } catch (error) {
@@ -159,5 +168,16 @@ if (document.readyState === 'loading') {
     initialize();
 }
 
-// Export the initialize function
-export { initialize }; 
+// Update theme UI
+function updateThemeUI() {
+    elements.lightIcon.classList.toggle('hidden', state.isDarkMode);
+    elements.darkIcon.classList.toggle('hidden', !state.isDarkMode);
+}
+
+// Update zoom UI
+function updateZoomUI() {
+    elements.zoomLevel.textContent = `${state.zoomLevel}%`;
+}
+
+// Export functions
+export { updateThemeUI, updateZoomUI }; 

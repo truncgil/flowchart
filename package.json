@@ -7,16 +7,17 @@
     "build": "npm run clean && npm run copy-all",
     "clean": "rimraf dist",
     "copy-all": "npm run create-dirs && npm run copy-files",
-    "create-dirs": "mkdir -p dist/assets dist/js dist/lib",
-    "copy-files": "cpx \"index.html\" dist/ && cpx \".htaccess\" dist/ && cpx \"favicon.ico\" dist/ && cpx -r assets/** dist/assets && cpx -r js/** dist/js && cpx -r lib/** dist/lib"
+    "create-dirs": "node -e \"require('mkdirp')('dist/assets'); require('mkdirp')('dist/js'); require('mkdirp')('dist/lib')\"",
+    "copy-files": "cpx \"index.html\" dist/ && cpx \".htaccess\" dist/ && cpx \"favicon.ico\" dist/ && cpx \"assets/**\" dist/assets && cpx \"js/**\" dist/js && cpx \"lib/**\" dist/lib"
   },
   "dependencies": {
-    "html-to-image": "^1.11.11",
-    "mermaid": "^10.8.0"
+    "mermaid": "^10.8.0",
+    "html-to-image": "^1.11.11"
   },
   "devDependencies": {
-    "cpx": "^1.5.0",
     "http-server": "^14.1.1",
-    "rimraf": "^5.0.10"
+    "rimraf": "^5.0.5",
+    "cpx": "^1.5.0",
+    "mkdirp": "^3.0.1"
   }
-}
+} 

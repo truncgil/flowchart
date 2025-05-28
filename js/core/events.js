@@ -17,7 +17,14 @@ const elements = {
     editorContainer: document.getElementById('code-editor-container'),
     editorHeader: document.getElementById('editor-header'),
     editorContent: document.getElementById('editor-content'),
-    toggleEditor: document.getElementById('toggle-editor')
+    toggleEditor: document.getElementById('toggle-editor'),
+    // DeepSeek Editor Elements
+    deepseekInput: document.getElementById('deepseek-input'),
+    deepseekEditorContainer: document.getElementById('deepseek-editor-container'),
+    deepseekEditorHeader: document.getElementById('deepseek-editor-header'),
+    deepseekEditorContent: document.getElementById('deepseek-editor-content'),
+    toggleDeepseekEditor: document.getElementById('toggle-deepseek-editor'),
+    convertToFlowchart: document.getElementById('convert-to-flowchart')
 };
 
 // Initialize event listeners
@@ -26,6 +33,7 @@ function initializeEventListeners() {
     elements.zoomOut.addEventListener('click', () => updateZoom(-10));
     elements.themeToggle.addEventListener('click', toggleTheme);
     elements.toggleEditor.addEventListener('click', toggleEditorCollapse);
+    elements.toggleDeepseekEditor.addEventListener('click', toggleDeepseekEditorCollapse);
 }
 
 // Theme handling
@@ -52,6 +60,9 @@ function toggleTheme() {
     if (state.editor) {
         state.editor.setOption('theme', state.isDarkMode ? 'monokai' : 'default');
     }
+    if (state.deepseekEditor) {
+        state.deepseekEditor.setOption('theme', state.isDarkMode ? 'monokai' : 'default');
+    }
 }
 
 // Toggle editor collapse
@@ -60,6 +71,20 @@ function toggleEditorCollapse() {
     elements.editorContent.style.display = state.isEditorCollapsed ? 'none' : 'block';
     elements.toggleEditor.querySelector('.material-icons').textContent = 
         state.isEditorCollapsed ? 'expand_less' : 'expand_more';
+}
+
+// Toggle DeepSeek editor collapse
+function toggleDeepseekEditorCollapse() {
+    const content = elements.deepseekEditorContent;
+    const icon = elements.toggleDeepseekEditor.querySelector('.material-icons');
+    
+    if (content.style.display === 'none') {
+        content.style.display = 'block';
+        icon.textContent = 'expand_more';
+    } else {
+        content.style.display = 'none';
+        icon.textContent = 'expand_less';
+    }
 }
 
 // Update zoom level
@@ -75,4 +100,5 @@ function updateZoom(delta) {
     }
 }
 
+// Export elements and functions
 export { elements, initializeEventListeners, toggleTheme, toggleEditorCollapse, updateZoom }; 
