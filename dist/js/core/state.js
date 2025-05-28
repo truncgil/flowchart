@@ -1,19 +1,19 @@
-// Core state management
+// Application state
 export const state = {
+    // Editor instances
+    editor: null,
+    truncgilAIEditor: null,
+    
+    // Current mermaid code
     mermaidCode: '',
+    
+    // Theme state
+    isDarkMode: false,
+    
+    // Zoom state
+    zoomLevel: 100,
     diagramSvg: null,
     isRendering: false,
-    zoomLevel: 100,
-    isDarkMode: (() => {
-        // Check localStorage first
-        const storedTheme = localStorage.getItem('darkMode');
-        if (storedTheme !== null) {
-            return storedTheme === 'true';
-        }
-        // If no stored preference, use system preference
-        return window.matchMedia('(prefers-color-scheme: dark)').matches;
-    })(),
-    editor: null,
     isEditorCollapsed: false,
     // Preview pan state
     isPanning: false,
@@ -23,6 +23,15 @@ export const state = {
     translateY: 0,
     currentStep: 1
 };
+
+// Initialize state
+export function initializeState() {
+    // Check for saved theme preference
+    state.isDarkMode = document.documentElement.classList.contains('dark');
+    
+    // Initialize zoom level
+    state.zoomLevel = 100;
+}
 
 // Initialize Mermaid
 export function initializeMermaid() {

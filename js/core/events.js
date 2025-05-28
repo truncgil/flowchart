@@ -2,12 +2,13 @@
 import { state } from './state.js';
 
 // DOM Elements
-export const elements = {
+const elements = {
     // Editor elements
-    editor: document.getElementById('mermaid-input'),
+    mermaidInput: document.getElementById('mermaid-input'),
     editorContainer: document.getElementById('code-editor-container'),
     editorHeader: document.getElementById('editor-header'),
     toggleEditor: document.getElementById('toggle-editor'),
+    editorContent: document.getElementById('editor-content'),
     
     // Truncgil AI Editor elements
     truncgilAIInput: document.getElementById('truncgilAI-input'),
@@ -15,6 +16,7 @@ export const elements = {
     truncgilAIEditorHeader: document.getElementById('truncgilAI-editor-header'),
     toggleTruncgilAIEditor: document.getElementById('toggle-truncgilAI-editor'),
     convertToFlowchart: document.getElementById('convert-to-flowchart'),
+    truncgilAIEditorContent: document.getElementById('truncgilAI-editor-content'),
     
     // Preview elements
     preview: document.getElementById('mermaid-preview'),
@@ -34,7 +36,7 @@ export const elements = {
 };
 
 // Initialize event listeners
-export function initializeEvents() {
+function initializeEvents() {
     // Editor toggle
     elements.toggleEditor.addEventListener('click', () => {
         elements.editorContainer.classList.toggle('collapsed');
@@ -140,8 +142,8 @@ function toggleTheme() {
     if (state.editor) {
         state.editor.setOption('theme', state.isDarkMode ? 'monokai' : 'default');
     }
-    if (state.deepseekEditor) {
-        state.deepseekEditor.setOption('theme', state.isDarkMode ? 'monokai' : 'default');
+    if (state.truncgilAIEditor) {
+        state.truncgilAIEditor.setOption('theme', state.isDarkMode ? 'monokai' : 'default');
     }
 }
 
@@ -153,20 +155,6 @@ function toggleEditorCollapse() {
         state.isEditorCollapsed ? 'expand_less' : 'expand_more';
 }
 
-// Toggle DeepSeek editor collapse
-function toggleDeepseekEditorCollapse() {
-    const content = elements.deepseekEditorContent;
-    const icon = elements.toggleDeepseekEditor.querySelector('.material-icons');
-    
-    if (content.style.display === 'none') {
-        content.style.display = 'block';
-        icon.textContent = 'expand_more';
-    } else {
-        content.style.display = 'none';
-        icon.textContent = 'expand_less';
-    }
-}
-
 // Update zoom level
 function updateZoom(delta) {
     const oldZoom = state.zoomLevel;
@@ -174,11 +162,17 @@ function updateZoom(delta) {
     elements.zoomLevel.textContent = `${state.zoomLevel}%`;
     
     // Update preview transform
-    const preview = elements.mermaidPreview;
+    const preview = elements.preview;
     if (preview) {
         preview.style.transform = `scale(${state.zoomLevel / 100})`;
     }
 }
 
-// Export elements and functions
-export { elements, initializeEventListeners, toggleTheme, toggleEditorCollapse, updateZoom }; 
+// Export all functions and elements
+export {
+    elements,
+    initializeEvents,
+    toggleTheme,
+    toggleEditorCollapse,
+    updateZoom
+}; 

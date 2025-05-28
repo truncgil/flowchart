@@ -4,19 +4,19 @@ import { elements } from '../core/events.js';
 
 function initializePreviewControls() {
     // Mouse wheel zoom
-    elements.mermaidPreview.addEventListener('wheel', (e) => {
+    elements.preview.addEventListener('wheel', (e) => {
         e.preventDefault();
         const delta = e.deltaY > 0 ? -10 : 10;
         updateZoom(delta, e.clientX, e.clientY);
     });
 
     // Mouse drag pan
-    elements.mermaidPreview.addEventListener('mousedown', (e) => {
+    elements.preview.addEventListener('mousedown', (e) => {
         if (e.button === 0) { // Left mouse button
             state.isPanning = true;
             state.startX = e.clientX - state.translateX;
             state.startY = e.clientY - state.translateY;
-            elements.mermaidPreview.style.cursor = 'grabbing';
+            elements.preview.style.cursor = 'grabbing';
         }
     });
 
@@ -34,12 +34,12 @@ function initializePreviewControls() {
     document.addEventListener('mouseup', () => {
         if (state.isPanning) {
             state.isPanning = false;
-            elements.mermaidPreview.style.cursor = 'grab';
+            elements.preview.style.cursor = 'grab';
         }
     });
 
     // Set initial cursor style
-    elements.mermaidPreview.style.cursor = 'grab';
+    elements.preview.style.cursor = 'grab';
 }
 
 function updateZoom(delta, mouseX, mouseY) {
@@ -48,7 +48,7 @@ function updateZoom(delta, mouseX, mouseY) {
     
     if (mouseX && mouseY) {
         // Calculate mouse position relative to preview
-        const rect = elements.mermaidPreview.getBoundingClientRect();
+        const rect = elements.preview.getBoundingClientRect();
         const x = mouseX - rect.left;
         const y = mouseY - rect.top;
         
@@ -63,7 +63,7 @@ function updateZoom(delta, mouseX, mouseY) {
 }
 
 function updatePreviewTransform() {
-    const svgContainer = elements.mermaidPreview.querySelector('.mermaid-svg-container');
+    const svgContainer = elements.preview.querySelector('.mermaid-svg-container');
     if (svgContainer) {
         svgContainer.style.transform = `translate(${state.translateX}px, ${state.translateY}px) scale(${state.zoomLevel / 100})`;
         svgContainer.style.transformOrigin = '0 0';

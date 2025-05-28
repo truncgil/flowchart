@@ -2,8 +2,7 @@
 import { state, initializeState } from './state.js';
 import { elements, initializeEvents } from './events.js';
 import { initializeCodeMirror } from '../editor/codemirror.js';
-import { initializeEditor } from '../editor/editor.js';
-import { initializeTruncgilAIEditor } from '../editor/deepseek-editor.js';
+import { initializeTruncgilAIEditor } from '../editor/editor.js';
 import { initializeLivePreview } from '../preview/renderer.js';
 import { initializePreviewControls } from '../preview/controls.js';
 import { exportAsPng } from '../export/png.js';
@@ -133,7 +132,7 @@ export function initialize() {
 
         // Initialize CodeMirror editors
         initializeCodeMirror();
-        initializeEditor();
+        initializeTruncgilAIEditor();
         initializeTruncgilAIEditor();
 
         // Initialize live preview

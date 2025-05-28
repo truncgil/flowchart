@@ -27,13 +27,13 @@ async function renderMermaidDiagram() {
     try {
         // Set rendering state
         state.isRendering = true;
-        elements.mermaidPreview.innerHTML = '<div class="flex items-center justify-center h-full text-gray-500 dark:text-gray-400"><span class="material-icons animate-spin mr-2">sync</span><span>Rendering diagram...</span></div>';
+        elements.preview.innerHTML = '<div class="flex items-center justify-center h-full text-gray-500 dark:text-gray-400"><span class="material-icons animate-spin mr-2">sync</span><span>Rendering diagram...</span></div>';
 
         // Validate syntax
         validateMermaidSyntax(state.mermaidCode);
 
         // Clear previous content
-        elements.mermaidPreview.innerHTML = '';
+        elements.preview.innerHTML = '';
 
         // Create a unique ID for this diagram
         const diagramId = 'truncgil-flowchart-diagram-' + Date.now();
@@ -43,7 +43,7 @@ async function renderMermaidDiagram() {
         diagramDiv.id = diagramId;
         diagramDiv.className = 'mermaid';
         diagramDiv.textContent = state.mermaidCode;
-        elements.mermaidPreview.appendChild(diagramDiv);
+        elements.preview.appendChild(diagramDiv);
 
         try {
             // Force Mermaid to reinitialize
@@ -57,8 +57,8 @@ async function renderMermaidDiagram() {
             svgContainer.innerHTML = svg;
             
             // Clear the preview container and add the SVG
-            elements.mermaidPreview.innerHTML = '';
-            elements.mermaidPreview.appendChild(svgContainer);
+            elements.preview.innerHTML = '';
+            elements.preview.appendChild(svgContainer);
             
             // Get the rendered SVG
             const svgElement = svgContainer.querySelector('svg');
@@ -100,7 +100,7 @@ async function renderMermaidDiagram() {
             }
         } catch (renderError) {
             console.error('Mermaid rendering error:', renderError);
-            elements.mermaidPreview.innerHTML = `
+            elements.preview.innerHTML = `
                 <div class="flex items-center justify-center h-full">
                     <div class="p-4 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 rounded-lg max-w-lg">
                         <div class="flex items-center mb-2">
@@ -115,7 +115,7 @@ async function renderMermaidDiagram() {
         }
     } catch (error) {
         console.error('Error in renderMermaidDiagram:', error);
-        elements.mermaidPreview.innerHTML = `
+        elements.preview.innerHTML = `
             <div class="flex items-center justify-center h-full">
                 <div class="p-4 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 rounded-lg max-w-lg">
                     <div class="flex items-center mb-2">

@@ -151,6 +151,29 @@
             </div>
         </div>
 
+        <!-- Truncgil AI Code Editor -->
+        <div id="truncgilAI-editor-container" class="fixed bottom-4 left-4 w-[600px] bg-white dark:bg-gray-800 rounded-lg shadow-xl transition-colors duration-200">
+            <!-- Editor Header -->
+            <div id="truncgilAI-editor-header" class="flex items-center justify-between p-3 border-b dark:border-gray-700 cursor-move transition-colors duration-200">
+                <div class="flex items-center space-x-2">
+                    <span class="material-icons text-gray-600 dark:text-gray-300 transition-colors duration-200">smart_toy</span>
+                    <h3 class="text-sm font-medium text-gray-800 dark:text-white transition-colors duration-200">Truncgil AI Editor</h3>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button id="toggle-truncgilAI-editor" class="p-1 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors duration-200">
+                        <span class="material-icons">expand_more</span>
+                    </button>
+                    <button id="convert-to-flowchart" class="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200">
+                        Convert
+                    </button>
+                </div>
+            </div>
+            <!-- Editor Content -->
+            <div id="truncgilAI-editor-content" class="h-[400px]">
+                <textarea id="truncgilAI-input"></textarea>
+            </div>
+        </div>
+
         <!-- Floating Code Editor -->
         <div id="code-editor-container" class="fixed bottom-4 right-4 w-[600px] bg-white dark:bg-gray-800 rounded-lg shadow-xl transition-colors duration-200">
             <!-- Editor Header -->
@@ -170,29 +193,6 @@
                 <textarea id="mermaid-input"></textarea>
             </div>
         </div>
-
-        <!-- DeepSeek AI Code Editor -->
-        <div id="deepseek-editor-container" class="fixed bottom-4 left-4 w-[600px] bg-white dark:bg-gray-800 rounded-lg shadow-xl transition-colors duration-200">
-            <!-- Editor Header -->
-            <div id="deepseek-editor-header" class="flex items-center justify-between p-3 border-b dark:border-gray-700 cursor-move transition-colors duration-200">
-                <div class="flex items-center space-x-2">
-                    <span class="material-icons text-gray-600 dark:text-gray-300 transition-colors duration-200">smart_toy</span>
-                    <h3 class="text-sm font-medium text-gray-800 dark:text-white transition-colors duration-200">DeepSeek AI Editor</h3>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <button id="toggle-deepseek-editor" class="p-1 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors duration-200">
-                        <span class="material-icons">expand_more</span>
-                    </button>
-                    <button id="convert-to-flowchart" class="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200">
-                        Convert
-                    </button>
-                </div>
-            </div>
-            <!-- Editor Content -->
-            <div id="deepseek-editor-content" class="h-[400px]">
-                <textarea id="deepseek-input"></textarea>
-            </div>
-        </div>
     </main>
 
     <!-- Load dependencies first -->
@@ -201,16 +201,16 @@
 
     <!-- Initialize TruncgilFlowchart and load app -->
     <script type="module">
-        // Wait for TruncgilFlowchart to load
-        function waitForTruncgilFlowchart(callback) {
-            if (window.mermaid) {
+        // Wait for DOM and TruncgilFlowchart to load
+        function waitForDependencies(callback) {
+            if (document.readyState === 'complete' && window.mermaid) {
                 callback();
             } else {
-                setTimeout(() => waitForTruncgilFlowchart(callback), 100);
+                setTimeout(() => waitForDependencies(callback), 100);
             }
         }
 
-        waitForTruncgilFlowchart(() => {
+        waitForDependencies(() => {
             console.log('Initializing TruncgilFlowchart...');
             mermaid.initialize({
                 startOnLoad: false,

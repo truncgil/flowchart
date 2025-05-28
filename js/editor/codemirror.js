@@ -49,4 +49,4 @@ function initializeCodeMirror() {
     });
 }
 
-export default initializeCodeMirror; 
+export { initializeCodeMirror }; 

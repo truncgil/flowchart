@@ -105,4 +105,4 @@ function showToast(message, type = 'info') {
     }, 3000);
 }
 
-export default exportAsPng; 
+export { exportAsPng }; 

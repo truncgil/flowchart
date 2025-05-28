@@ -1,12 +1,13 @@
 // Main application module
-import { state } from './state.js';
-import { elements, initializeEventListeners } from './events.js';
+import { state, initializeState } from './state.js';
+import { elements, initializeEvents } from './events.js';
 import { initializeCodeMirror } from '../editor/codemirror.js';
-import { initializeDeepSeekEditor } from '../editor/deepseek-editor.js';
+import { initializeTruncgilAIEditor } from '../editor/editor.js';
+import { initializeTruncgilAIEditor } from '../editor/editor.js';
 import { initializeLivePreview } from '../preview/renderer.js';
 import { initializePreviewControls } from '../preview/controls.js';
-import exportAsPng from '../export/png.js';
-import exportAsSvg from '../export/svg.js';
+import { exportAsPng } from '../export/png.js';
+import { exportAsSvg } from '../export/svg.js';
 
 // Initialize system preference listener
 function initializeSystemPreferenceListener() {
@@ -48,6 +49,9 @@ function updateTheme() {
     if (state.editor) {
         state.editor.setOption('theme', state.isDarkMode ? 'monokai' : 'default');
     }
+    if (state.truncgilAIEditor) {
+        state.truncgilAIEditor.setOption('theme', state.isDarkMode ? 'monokai' : 'default');
+    }
 }
 
 // Initialize drag and drop functionality
@@ -61,6 +65,7 @@ function initializeDragAndDrop() {
     let yOffset = 0;
 
     elements.editorHeader.addEventListener('mousedown', dragStart);
+    elements.truncgilAIEditorHeader.addEventListener('mousedown', dragStart);
     document.addEventListener('mousemove', drag);
     document.addEventListener('mouseup', dragEnd);
 
@@ -68,7 +73,8 @@ function initializeDragAndDrop() {
         initialX = e.clientX - xOffset;
         initialY = e.clientY - yOffset;
 
-        if (e.target === elements.editorHeader || e.target.parentNode === elements.editorHeader) {
+        if (e.target === elements.editorHeader || e.target.parentNode === elements.editorHeader ||
+            e.target === elements.truncgilAIEditorHeader || e.target.parentNode === elements.truncgilAIEditorHeader) {
             isDragging = true;
         }
     }
@@ -83,6 +89,7 @@ function initializeDragAndDrop() {
             yOffset = currentY;
 
             setTranslate(currentX, currentY, elements.editorContainer);
+            setTranslate(currentX, currentY, elements.truncgilAIEditorContainer);
         }
     }
 
@@ -119,17 +126,15 @@ export function initialize() {
     
     try {
         // Initialize state
-        state.isDarkMode = document.documentElement.classList.contains('dark');
-        state.isEditorCollapsed = false;
-        state.zoomLevel = 100;
-        state.previewTimeout = null;
+        initializeState();
 
         // Initialize event listeners
-        initializeEventListeners();
+        initializeEvents();
 
         // Initialize CodeMirror editors
         initializeCodeMirror();
-        initializeDeepSeekEditor();
+        initializeTruncgilAIEditor();
+        initializeTruncgilAIEditor();
 
         // Initialize live preview
         initializeLivePreview();

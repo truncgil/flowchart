@@ -52,4 +52,4 @@ function showToast(message, type = 'info') {
     }, 3000);
 }
 
-export default exportAsSvg; 
+export { exportAsSvg }; 
