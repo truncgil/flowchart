@@ -67,7 +67,7 @@ async function renderMermaidDiagram() {
                 svgElement.removeAttribute('width');
                 svgElement.removeAttribute('height');
                 svgElement.style.width = 'auto';
-                svgElement.style.height = 'auto';
+                svgElement.style.height = '80vh';
                 svgElement.style.maxWidth = 'none';
                 svgElement.style.maxHeight = 'none';
                 
